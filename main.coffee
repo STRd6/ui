@@ -2,19 +2,7 @@ style = document.createElement "style"
 style.innerHTML = require "../style"
 document.head.appendChild style
 
-Observable = require "observable"
-
-Action = (fn, hotkey) ->
-  disabled = Observable false
-  setInterval ->
-    disabled.toggle()
-  , 1000
-
-  disabled: disabled
-  hotkey: ->
-    hotkey
-  call: (args...) ->
-    fn.call(args...)
+Action = require "./action"
 
 sampleMenuParsed = require "../samples/notepad-menu"
 MenuView = require "../views/file-menu"
