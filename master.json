@@ -89,7 +89,7 @@
     },
     "modal.coffee": {
       "path": "modal.coffee",
-      "content": "modal = document.createElement \"div\"\nmodal.id = \"modal\"\nmodal.tabIndex = 0\n\nmodal.onclick = (e) ->\n  if e.target is modal\n    Modal.hide()\n\nmodal.onkeydown = (e) ->\n  if e.key is \"Escape\"\n    Modal.hide()\n\ndocument.body.appendChild modal\n\nmodule.exports = Modal =\n  show: (element) ->\n    empty(modal).appendChild(element)\n    modal.classList.add \"active\"\n    modal.focus()\n\n  hide: ->\n    modal.classList.remove \"active\"\n\nempty = (node) ->\n  while node.hasChildNodes()\n    node.removeChild(node.lastChild)\n\n  return node\n",
+      "content": "modal = document.createElement \"div\"\nmodal.id = \"modal\"\n\nmodal.onclick = (e) ->\n  if e.target is modal\n    Modal.hide()\n\ndocument.addEventListener \"keydown\", (e) ->\n  unless e.defaultPrevented\n    if e.key is \"Escape\"\n      Modal.hide()\n\ndocument.body.appendChild modal\n\nmodule.exports = Modal =\n  show: (element) ->\n    empty(modal).appendChild(element)\n    modal.classList.add \"active\"\n\n  hide: ->\n    modal.classList.remove \"active\"\n\nempty = (node) ->\n  while node.hasChildNodes()\n    node.removeChild(node.lastChild)\n\n  return node\n",
       "mode": "100644"
     }
   },
@@ -166,7 +166,7 @@
     },
     "modal": {
       "path": "modal",
-      "content": "(function() {\n  var Modal, empty, modal;\n\n  modal = document.createElement(\"div\");\n\n  modal.id = \"modal\";\n\n  modal.tabIndex = 0;\n\n  modal.onclick = function(e) {\n    if (e.target === modal) {\n      return Modal.hide();\n    }\n  };\n\n  modal.onkeydown = function(e) {\n    if (e.key === \"Escape\") {\n      return Modal.hide();\n    }\n  };\n\n  document.body.appendChild(modal);\n\n  module.exports = Modal = {\n    show: function(element) {\n      empty(modal).appendChild(element);\n      modal.classList.add(\"active\");\n      return modal.focus();\n    },\n    hide: function() {\n      return modal.classList.remove(\"active\");\n    }\n  };\n\n  empty = function(node) {\n    while (node.hasChildNodes()) {\n      node.removeChild(node.lastChild);\n    }\n    return node;\n  };\n\n}).call(this);\n",
+      "content": "(function() {\n  var Modal, empty, modal;\n\n  modal = document.createElement(\"div\");\n\n  modal.id = \"modal\";\n\n  modal.onclick = function(e) {\n    if (e.target === modal) {\n      return Modal.hide();\n    }\n  };\n\n  document.addEventListener(\"keydown\", function(e) {\n    if (!e.defaultPrevented) {\n      if (e.key === \"Escape\") {\n        return Modal.hide();\n      }\n    }\n  });\n\n  document.body.appendChild(modal);\n\n  module.exports = Modal = {\n    show: function(element) {\n      empty(modal).appendChild(element);\n      return modal.classList.add(\"active\");\n    },\n    hide: function() {\n      return modal.classList.remove(\"active\");\n    }\n  };\n\n  empty = function(node) {\n    while (node.hasChildNodes()) {\n      node.removeChild(node.lastChild);\n    }\n    return node;\n  };\n\n}).call(this);\n",
       "type": "blob"
     },
     "lib/hamlet-runtime": {
