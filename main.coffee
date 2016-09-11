@@ -1,16 +1,28 @@
-style = document.createElement "style"
-style.innerHTML = require "../style"
-document.head.appendChild style
-
 Action = require "./action"
+modal = require "./modal"
+MenuView = require "./views/file-menu"
 
-sampleMenuParsed = require "../samples/notepad-menu"
-MenuView = require "../views/file-menu"
-{element} = MenuView sampleMenuParsed,
-  new:(Action ->
-    console.log 'New!'
-  , "Ctrl+N")
-  pageSetup: (Action ->
-    console.log "settin up a page"
-  , "Ctrl+Shift+P")
-document.body.appendChild element
+if PACKAGE.name is "ROOT"
+  style = document.createElement "style"
+  style.innerHTML = require "./style"
+  document.head.appendChild style
+
+  sampleMenuParsed = require "../samples/notepad-menu"
+  {element} = MenuView sampleMenuParsed,
+    new: (Action ->
+      console.log 'New!'
+    , "Ctrl+N")
+    pageSetup: (Action ->
+      console.log "settin up a page"
+    , "Ctrl+Shift+P")
+    print: ->
+      p = document.createElement('p')
+      p.innerText = "hello"
+      modal.show p
+
+  document.body.appendChild element
+
+module.exports = {
+  modal
+  MenuView
+}

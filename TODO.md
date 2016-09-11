@@ -17,6 +17,8 @@ Global Hotkeys
 
 Windows
 
+Loader / Progress
+
 TOMAYBE
 =======
 
