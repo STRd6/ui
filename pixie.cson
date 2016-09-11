@@ -1,0 +1,5 @@
+entryPoint: "main"
+remoteDependencies: [
+]
+dependencies:
+  observable: "distri/observable:master"
