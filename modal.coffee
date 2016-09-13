@@ -8,17 +8,23 @@ modal.onclick = (e) ->
 document.addEventListener "keydown", (e) ->
   unless e.defaultPrevented
     if e.key is "Escape"
+      e.preventDefault()
       Modal.hide()
 
 document.body.appendChild modal
 
+closeHandler = null
+
 module.exports = Modal =
-  show: (element) ->
+  show: (element, _closeHandler) ->
+    closeHandler = _closeHandler
     empty(modal).appendChild(element)
     modal.classList.add "active"
 
   hide: ->
+    closeHandler?()
     modal.classList.remove "active"
+    empty(modal)
 
 empty = (node) ->
   while node.hasChildNodes()
