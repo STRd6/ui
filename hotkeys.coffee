@@ -16,7 +16,7 @@ Questions
 
 Should we just use Mousetrap?
 
-Probably :P
+Maybe, but it may have different semantics with preventDefault/defaultPrevented.
 
 Should we allow binding to specific elements?
 
@@ -24,13 +24,9 @@ Imagine a windowing OS where non-iframe apps are inside draggable windows. We'd
 like to have each 'app' able to have its own hotkeys and at the same time have
 global OS level hotkeys.
 
-Should preventDefault prevent executing the hotkey action?
+Should `defaultPrevented` prevent executing the hotkey action? Yes
 
-Probably
-
-Should executing a hotkey preventDefault?
-
-Probably
+Should executing a hotkey preventDefault? Yes
 
 ###
 

@@ -1,1 +1,1 @@
-ul(@class keydown=@log)= @items
+ul(@class)= @items

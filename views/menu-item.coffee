@@ -86,7 +86,6 @@ module.exports = MenuItemView = (item, handler, parent, top, activeItem) ->
           else
             activeItem advance(navigableItems, 1)
         when "Left"
-          console.log "Left!", self, activeItem()
           # If we are at a top level menu select the adjacent menu
           if parent is top or parent.parent is top
             if self != activeItem()

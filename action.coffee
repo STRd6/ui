@@ -6,7 +6,7 @@ Actions have a function to call, a hotkey, and a function that determines
 whether or not they are disabled. This is so we can present them in the UI for
 menus.
 
-The hotkey is for display purposes only and needs to be listened to by a 
+The hotkey is for display purposes only and needs to be listened to by a
 separate mechanism to perform. [TODO] The action can be executed like a regular
 function (instead of needing to use call).
 ###

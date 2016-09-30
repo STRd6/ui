@@ -18,6 +18,8 @@ module.exports = (data, handler) ->
     accelerate: (key) ->
       accelerateItem menuItems, key
     items: null
+    cursor: ->
+      activeItem menuItems[0]
 
   self.items = menuItems = data.map (item) ->
     MenuItemView(item, handler, self, self, activeItem)
@@ -74,8 +76,11 @@ module.exports = (data, handler) ->
     switch key
       when "ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"
         e.preventDefault()
+        
+        currentItem = activeItem()
         direction = key.replace("Arrow", "")
-        activeItem().cursor(direction)
+        currentItem.cursor(direction)
+
       when "Escape"
         deactivate()
       else
