@@ -113,7 +113,7 @@ module.exports = MenuItemView = (item, handler, parent, top, activeItem) ->
     self.navigableItems = navigableItems
     click = (e) ->
       return if e?.defaultPrevented
-      e.preventDefault()
+      e?.preventDefault()
 
       activeItem self
     content = MenuTemplate

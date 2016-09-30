@@ -69,7 +69,7 @@ module.exports = (data, handler) ->
           acceleratorActive true
 
   # We need to be able to focus the menu to receive keyboard events on it
-  element.setAttribute("tabindex", "0")
+  element.setAttribute("tabindex", "-1")
   element.addEventListener "keydown", (e) ->
     {key} = e
 

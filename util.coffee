@@ -41,7 +41,7 @@ module.exports =
   S: S
 
   asElement: asElement
-  
+
   accelerateItem: accelerateItem
 
   isDescendant: isDescendant
