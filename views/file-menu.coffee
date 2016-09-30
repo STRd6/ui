@@ -43,7 +43,6 @@ module.exports = (data, handler) ->
     previouslyFocusedElement?.focus()
 
   # TODO: Handle mouseout
-  # TODO: Handle initial click to activate
 
   document.addEventListener "mousedown", (e) ->
     unless isDescendant(e.target, element)
@@ -67,6 +66,8 @@ module.exports = (data, handler) ->
           activeItem self unless activeItem()
           acceleratorActive true
 
+  # We need to be able to focus the menu to receive keyboard events on it
+  element.setAttribute("tabindex", "0")
   element.addEventListener "keydown", (e) ->
     {key} = e
 

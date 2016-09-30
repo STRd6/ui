@@ -22,7 +22,7 @@ advance = (list, amount) ->
 # Parse out custom action symbol from entries like:
 #
 #     [F]ont... -> showFont
-# 
+#
 # Falling back to formatting the action title
 formatAction = (labelText) ->
   [title, action] = labelText.split("->").map F("trim")
@@ -94,7 +94,7 @@ module.exports = MenuItemView = (item, handler, parent, top, activeItem) ->
             else
               activeItem advance(top.items, -1)
           else # If we are in a submenu select self in the parent's items
-            if self != activeItem() 
+            if self != activeItem()
               activeItem self
             else
               activeItem parent
@@ -114,6 +114,7 @@ module.exports = MenuItemView = (item, handler, parent, top, activeItem) ->
     self.navigableItems = navigableItems
     click = (e) ->
       return if e?.defaultPrevented
+      e.preventDefault()
 
       activeItem self
     content = MenuTemplate
@@ -137,9 +138,9 @@ module.exports = MenuItemView = (item, handler, parent, top, activeItem) ->
 
       unless disabled()
         console.log "Handled", actionName
-  
+
         action?.call?(handler)
-  
+
         # TODO: More cleanup than just clearing the active item, like also we
         # should clear accelerator state, and maybe return focus to previously
         # focused element.
@@ -169,14 +170,18 @@ module.exports = MenuItemView = (item, handler, parent, top, activeItem) ->
       ]
     click: click
     mousemove: (e) ->
-      # TODO: Click to activate top level menus unless a menu is already active
+      # Click to activate top level menus unless a menu is already active
       # then hover to show.
+      currentItem = activeItem()
+      return unless currentItem
+
       if isDescendant(e.target, element) and !e.defaultPrevented
-        # Note: We're just using preventDefault to prevent handling the 
+        # Note: We're just using preventDefault to prevent handling the
         # activation above the first element that handles it
         e.preventDefault()
 
         activeItem self
+
     title: title
     content: content
     hotkey: hotkey
