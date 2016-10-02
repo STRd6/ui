@@ -9,6 +9,9 @@ menus.
 The hotkey is for display purposes only and needs to be listened to by a
 separate mechanism to perform. [TODO] The action can be executed like a regular
 function (instead of needing to use call).
+
+Actions may have icons and help text as well.
+
 ###
 
 Observable = require "observable"
