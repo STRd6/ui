@@ -28,4 +28,6 @@ if PACKAGE.name is "ROOT"
 module.exports = {
   modal
   MenuView
+  Style:
+    modal: require "./style.modal"
 }
