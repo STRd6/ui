@@ -21,8 +21,8 @@ module.exports = Modal =
     empty(modal).appendChild(element)
     modal.classList.add "active"
 
-  hide: ->
-    closeHandler?()
+  hide: (dataForHandler) ->
+    closeHandler?(dataForHandler)
     modal.classList.remove "active"
     empty(modal)
 

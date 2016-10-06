@@ -4,7 +4,10 @@ MenuView = require "./views/file-menu"
 
 if PACKAGE.name is "ROOT"
   style = document.createElement "style"
-  style.innerHTML = require "./style"
+  style.innerHTML = [
+    require "./style/main"
+    require "./style/modal"
+  ].join("\n")
   document.head.appendChild style
 
   sampleMenuParsed = require "../samples/notepad-menu"
