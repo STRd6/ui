@@ -1,5 +1,5 @@
 Action = require "./action"
-modal = require "./modal"
+Modal = require "./modal"
 MenuView = require "./views/file-menu"
 
 if PACKAGE.name is "ROOT"
@@ -21,13 +21,13 @@ if PACKAGE.name is "ROOT"
     print: ->
       p = document.createElement('p')
       p.innerText = "hello"
-      modal.show p
+      Modal.show p
 
   document.body.appendChild element
 
 module.exports = {
-  modal
+  Modal
   MenuView
   Style:
-    modal: require "./style.modal"
+    modal: require "./style/modal"
 }
