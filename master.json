@@ -50,7 +50,7 @@
     },
     "pixie.cson": {
       "path": "pixie.cson",
-      "content": "entryPoint: \"main\"\nremoteDependencies: [\n]\ndependencies:\n  observable: \"distri/observable:master\"\n",
+      "content": "version: \"0.1.0\"\nentryPoint: \"main\"\nremoteDependencies: [\n]\ndependencies:\n  observable: \"distri/observable:master\"\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -146,7 +146,7 @@
     },
     "pixie": {
       "path": "pixie",
-      "content": "module.exports = {\"entryPoint\":\"main\",\"remoteDependencies\":[],\"dependencies\":{\"observable\":\"distri/observable:master\"}};",
+      "content": "module.exports = {\"version\":\"0.1.0\",\"entryPoint\":\"main\",\"remoteDependencies\":[],\"dependencies\":{\"observable\":\"distri/observable:master\"}};",
       "type": "blob"
     },
     "samples/notepad-menu": {
@@ -213,6 +213,7 @@
   "progenitor": {
     "url": "https://danielx.net/editor/"
   },
+  "version": "0.1.0",
   "entryPoint": "main",
   "remoteDependencies": [],
   "repository": {
