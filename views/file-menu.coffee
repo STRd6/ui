@@ -76,7 +76,7 @@ module.exports = (data, handler) ->
     switch key
       when "ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"
         e.preventDefault()
-        
+
         currentItem = activeItem()
         direction = key.replace("Arrow", "")
         currentItem.cursor(direction)

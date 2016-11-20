@@ -66,6 +66,8 @@ module.exports = MenuItemView = (item, handler, parent, top, activeItem) ->
   active = ->
     isDescendant activeItem()?.element, element
 
+  console.log item
+
   if Array.isArray(item) # Submenu
     [label, items] = item
 

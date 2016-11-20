@@ -1,6 +1,9 @@
 Action = require "./action"
 Modal = require "./modal"
-MenuView = require "./views/file-menu"
+FileMenuView = require "./views/file-menu"
+MenuItemView = require "./views/menu-item"
+Observable = require "observable"
+#ContextMenu = require "./context-menu"
 
 if PACKAGE.name is "ROOT"
   style = document.createElement "style"
@@ -11,7 +14,7 @@ if PACKAGE.name is "ROOT"
   document.head.appendChild style
 
   sampleMenuParsed = require "../samples/notepad-menu"
-  {element} = MenuView sampleMenuParsed,
+  {element} = FileMenuView sampleMenuParsed,
     new: (Action ->
       console.log 'New!'
     , "Ctrl+N")
@@ -25,9 +28,20 @@ if PACKAGE.name is "ROOT"
 
   document.body.appendChild element
 
+  rootNode = {}
+  rootNode.parent = rootNode
+
+  {element:contextMenu} = MenuItemView sampleMenuParsed[0], {}, rootNode, rootNode, Observable()
+  contextMenu.classList.add "context"
+
+  document.addEventListener "contextmenu", (e) ->
+    e.preventDefault()
+    console.log e
+    document.body.appendChild contextMenu
+
 module.exports = {
   Modal
-  MenuView
+  MenuItemView
   Style:
     modal: require "./style/modal"
 }

@@ -19,6 +19,9 @@ module.exports = parse """
       [N]ested
       [R]ad
         So Rad
+        Hella
+          Hecka
+            Super Hecka
   [E]dit
     [U]ndo
     Redo
