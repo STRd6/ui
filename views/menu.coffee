@@ -127,6 +127,7 @@ MenuItemView = ({label, MenuView, items, contextRoot}) ->
 
     title: title
     content: content
+    caret: "▸" if items
     # hotkey: hotkey
     # disabled: disabled
 

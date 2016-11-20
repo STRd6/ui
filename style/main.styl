@@ -82,20 +82,14 @@ ul.menu-options, ul.menu
   > li.menu
     position: relative
 
-    > label::after
-      content: "▸"
-      float: right
-      line-height: 1em
-
-    > ul.menu-options
+    > ul.menu-options, > ul.menu
       position: absolute
       left: 100%
       top: -3px
       margin-left: 1px
 
-li.menu
-  &.active
-    > ul.menu-options
-      background-color: lightgrey
-      color: black
-      display: block
+li.menu.active
+  > ul.menu-options, > ul.menu
+    background-color: lightgrey
+    color: black
+    display: block

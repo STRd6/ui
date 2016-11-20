@@ -32,7 +32,7 @@ if PACKAGE.name is "ROOT"
   document.body.appendChild element
 
   contextMenu = ContextMenuView
-    items: sampleMenuParsed[0][1]
+    items: sampleMenuParsed[1][1]
 
   document.addEventListener "contextmenu", (e) ->
     e.preventDefault()
