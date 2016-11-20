@@ -1,0 +1,12 @@
+CACHE MANIFEST
+# 1479674866835
+
+CACHE:
+index.html
+../caret-troubles.json
+
+
+NETWORK:
+https://*
+http://*
+*
