@@ -2,8 +2,11 @@ Action = require "./action"
 Modal = require "./modal"
 FileMenuView = require "./views/file-menu"
 MenuItemView = require "./views/menu-item"
+MenuView = require "./views/menu"
 Observable = require "observable"
 #ContextMenu = require "./context-menu"
+
+global.assert = require "./lib/assert"
 
 if PACKAGE.name is "ROOT"
   style = document.createElement "style"
@@ -31,7 +34,7 @@ if PACKAGE.name is "ROOT"
   rootNode = {}
   rootNode.parent = rootNode
 
-  {element:contextMenu} = MenuItemView sampleMenuParsed[0], {}, rootNode, rootNode, Observable()
+  {element:contextMenu} = MenuView sampleMenuParsed[0][1], {}, rootNode, rootNode, Observable()
   contextMenu.classList.add "context"
 
   document.addEventListener "contextmenu", (e) ->

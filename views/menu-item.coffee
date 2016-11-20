@@ -1,23 +1,10 @@
-{htmlEscape, asElement, F, S, isDescendant, accelerateItem} = require "../util"
+{advance, htmlEscape, asElement, F, S, isDescendant, accelerateItem, handle} = require "../util"
 
 Observable = require "observable"
 
 MenuTemplate = require "../templates/menu"
 MenuItemTemplate = require "../templates/menu-item"
 MenuSeparator = require "../templates/menu-separator"
-
-advance = (list, amount) ->
-  [currentItem] = list.filter (item) ->
-    item.active()
-
-  activeItemIndex = list.indexOf(currentItem) + amount
-
-  if activeItemIndex < 0
-    activeItemIndex = list.length - 1
-  else if activeItemIndex >= list.length
-    activeItemIndex = 0
-
-  list[activeItemIndex]
 
 # Parse out custom action symbol from entries like:
 #
@@ -66,7 +53,7 @@ module.exports = MenuItemView = (item, handler, parent, top, activeItem) ->
   active = ->
     isDescendant activeItem()?.element, element
 
-  console.log item
+  # console.log item
 
   if Array.isArray(item) # Submenu
     [label, items] = item
@@ -113,10 +100,7 @@ module.exports = MenuItemView = (item, handler, parent, top, activeItem) ->
 
     self.items = items
     self.navigableItems = navigableItems
-    click = (e) ->
-      return if e?.defaultPrevented
-      e?.preventDefault()
-
+    click = handle (e) ->
       activeItem self
     content = MenuTemplate
       class: "menu-options"
@@ -134,9 +118,7 @@ module.exports = MenuItemView = (item, handler, parent, top, activeItem) ->
     disabled = S(action, "disabled", false)
     hotkey = S(action, "hotkey", "")
 
-    click = (e) ->
-      e?.preventDefault()
-
+    click = handle (e) ->
       unless disabled()
         console.log "Handled", actionName
 
@@ -176,8 +158,8 @@ module.exports = MenuItemView = (item, handler, parent, top, activeItem) ->
       currentItem = activeItem()
       return unless currentItem
 
-      if isDescendant(e.target, element) and !e.defaultPrevented
-        # Note: We're just using preventDefault to prevent handling the
+      if !e.defaultPrevented and isDescendant(e.target, element)
+        # Note: We're using preventDefault to prevent handling the
         # activation above the first element that handles it
         e.preventDefault()
 

@@ -3,10 +3,15 @@ Observable = require "observable"
 MenuTemplate = require "../templates/menu"
 MenuItemView = require "./menu-item"
 
-{asElement, accelerateItem, isDescendant} = require "../util"
+{asElement, accelerateItem, isDescendant, handle} = require "../util"
 
 # TODO: Can this be combined with MenuItemView to reduce some redundancy at the
 # top level?
+
+# MenuBar is a better name that FileMenu
+# The MenuBar is a list MenuItems arranged in a bar across the top of a page or
+# window.
+
 module.exports = (data, handler) ->
   acceleratorActive = Observable false
   # Track active menus and item for navigation
@@ -30,13 +35,13 @@ module.exports = (data, handler) ->
 
   element = MenuTemplate
     items: menuItems.map asElement
-    log: (e) ->
-      console.log e
     class: ->
       [
         "menu-bar"
         "accelerator-active" if acceleratorActive()
       ]
+    click: handle (e) ->
+      activeItem self
 
   deactivate = ->
     activeItem null
@@ -76,10 +81,12 @@ module.exports = (data, handler) ->
     switch key
       when "ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"
         e.preventDefault()
+        direction = key.replace("Arrow", "")
 
         currentItem = activeItem()
-        direction = key.replace("Arrow", "")
-        currentItem.cursor(direction)
+
+        if currentItem
+          currentItem.cursor(direction)
 
       when "Escape"
         deactivate()
