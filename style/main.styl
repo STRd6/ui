@@ -82,6 +82,11 @@ ul.menu-options, ul.menu
   > li.menu
     position: relative
 
+    > label::after
+      content: "▸"
+      float: right
+      line-height: 1em
+
     > ul.menu-options, > ul.menu
       position: absolute
       left: 100%
