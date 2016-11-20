@@ -72,25 +72,28 @@ ul.menu-bar
     span.accelerator
       text-decoration: underline
 
+ul.menu-options, ul.menu
+  display: none
+
+  &.active
+    display: block
+
+  // Submenu
+  > li.menu
+    position: relative
+
+    > label::after
+      content: "▸"
+      float: right
+      line-height: 1em
+
+    > ul.menu-options
+      position: absolute
+      left: 100%
+      top: -3px
+      margin-left: 1px
+
 li.menu
-  > ul.menu-options
-    display: none
-
-    // Submenu
-    > li.menu
-      position: relative
-
-      > label::after
-        content: "▸"
-        float: right
-        line-height: 1em
-
-      > ul.menu-options
-        position: absolute
-        left: 100%
-        top: -3px
-        margin-left: 1px
-
   &.active
     > ul.menu-options
       background-color: lightgrey
