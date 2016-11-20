@@ -1,0 +1,12 @@
+CACHE MANIFEST
+# 1479609257634
+
+CACHE:
+index.html
+../context-menu-exploration.json
+
+
+NETWORK:
+https://*
+http://*
+*
