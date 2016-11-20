@@ -4,7 +4,7 @@ FileMenuView = require "./views/file-menu"
 MenuItemView = require "./views/menu-item"
 MenuView = require "./views/menu"
 Observable = require "observable"
-#ContextMenu = require "./context-menu"
+ContextMenuView = require "./views/context-menu"
 
 global.assert = require "./lib/assert"
 
@@ -31,16 +31,16 @@ if PACKAGE.name is "ROOT"
 
   document.body.appendChild element
 
-  rootNode = {}
-  rootNode.parent = rootNode
-
-  {element:contextMenu} = MenuView sampleMenuParsed[0][1], {}, rootNode, rootNode, Observable()
-  contextMenu.classList.add "context"
+  contextMenu = ContextMenuView
+    items: sampleMenuParsed[1][1]
 
   document.addEventListener "contextmenu", (e) ->
     e.preventDefault()
-    console.log e
-    document.body.appendChild contextMenu
+
+    contextMenu.display
+      inElement: document.body
+      x: e.pageX
+      y: e.pageY
 
 module.exports = {
   Modal

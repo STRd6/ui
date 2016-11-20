@@ -2,7 +2,7 @@ MenuTemplate = require "../templates/menu"
 
 # MenuItem = require "./menu-item"
 
-{asElement, F, htmlEscape, handle} = require "../util"
+{asElement, F, htmlEscape, handle, isDescendant} = require "../util"
 
 # MenuView
 
@@ -14,18 +14,39 @@ MenuTemplate = require "../templates/menu"
 # ex. [
 #   "Cool"
 #   ["Submenu", [
-#     "Yo", 
+#     "Yo",
 #     "Wat"
 #   ]]
 # ]
 #
-module.exports = MenuView = (items, parent) ->
+module.exports = MenuView = ({items, contextRoot}) ->
   console.log "MenuView", items
   self = {}
 
+  {activeItem} = contextRoot
+
+  # TODO: This gets called per menu item when the state changes
+  # Could we shift it a little to only be called for the relevant subtree?
+  active = ->
+    isDescendant activeItem()?.element, self.element
+
   # Promote item data to MenuItemViews
   items = items.map (item) ->
-    MenuItemView(item).element
+    switch
+      when item is "-"
+        SeparatorView()
+      when Array.isArray(item)
+        assert item.length is 2
+        [label, submenuItems] = item
+        MenuItemView
+          label: label
+          items: submenuItems
+          MenuView: MenuView
+          contextRoot: contextRoot
+      else
+        MenuItemView
+          label: item
+          contextRoot: contextRoot
 
   navigableItems = items.filter (item) ->
     !item.separator
@@ -49,24 +70,28 @@ module.exports = MenuView = (items, parent) ->
     class: ->
       [
         "menu"
-        #"active" if active()
+        "active" if active()
       ]
     click: handle (e) ->
       activeItem self
-    items: items
+    items: items.map asElement
+  
+  console.log self
 
   return self
 
-MenuItemView = (item) ->
-  console.log "MenuItem", item
-  if Array.isArray(item)
-    assert item.length is 2
+MenuItemView = ({label, MenuView, items, contextRoot}) ->
+  self = {}
+  console.log "MenuItem", label
 
-    [label, items] = item
+  {activeItem} = contextRoot
+  # TODO: This gets called per menu item when the state changes
+  # Could we shift it a little to only be called for the relevant subtree?
+  active = ->
+    isDescendant activeItem()?.element, element
 
-    content = MenuView(items).element
-  else
-    label = item
+  if items
+    content = MenuView({items, contextRoot}).element
 
   [title, accelerator] = formatLabel label
 
@@ -74,7 +99,7 @@ MenuItemView = (item) ->
     class: ->
       [
         "menu" if items
-        # "active" if active()
+        "active" if active()
       ]
     # TODO: Don't handle click on disabled
     click: handle (e) ->
@@ -91,8 +116,7 @@ MenuItemView = (item) ->
     mousemove: (e) ->
       # Click to activate top level menus unless a menu is already active
       # then hover to show.
-      currentItem = activeItem()
-      return unless currentItem
+      return unless activeItem()
 
       if !e.defaultPrevented and isDescendant(e.target, element)
         # Note: We're using preventDefault to prevent handling the
@@ -110,15 +134,15 @@ MenuItemView = (item) ->
 
   return self
 
+MenuSeparatorTemplate = require "../templates/menu-separator"
 SeparatorView = ->
-  element: MenuSeparator()
+  element: MenuSeparatorTemplate()
   separator: true
 
 Observable = require "observable"
 
 MenuTemplate = require "../templates/menu"
 MenuItemTemplate = require "../templates/menu-item"
-MenuSeparator = require "../templates/menu-separator"
 
 # Parse out custom action symbol from entries like:
 #

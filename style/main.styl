@@ -18,11 +18,12 @@ no-select()
   -webkit-user-select: none
   -ms-user-select: none
 
-ul.menu-options, ul.menu-bar
+ul.menu-options, ul.menu-bar, ul.menu
   no-select()
 
   background-color: lightgrey
   border-bottom: 1px solid rgba(0, 0, 0, 0.5)
+  margin: 0
 
   > li
     list-style-type: none
@@ -49,7 +50,7 @@ ul.menu-options, ul.menu-bar
       &.active
         background-color: rgba(0, 0, 0, 0.125)
 
-ul.menu-options
+ul.menu-options, ul.menu
   border-top: 1px solid rgba(255, 255, 255, 0.5)
   border-left: 1px solid rgba(255, 255, 255, 0.5)
   border-right: 1px solid rgba(0, 0, 0, 0.5)
