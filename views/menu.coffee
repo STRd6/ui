@@ -30,11 +30,6 @@ module.exports = MenuView = ({items, classes, contextRoot, parent}) ->
 
   {activeItem} = contextRoot
 
-  # TODO: This gets called per menu item when the state changes
-  # Could we shift it a little to only be called for the relevant subtree?
-  active = ->
-    isDescendant activeItem()?.element, self.element
-
   # Promote item data to MenuItemViews
   items = items.map (item) ->
     switch
@@ -58,32 +53,33 @@ module.exports = MenuView = ({items, classes, contextRoot, parent}) ->
   navigableItems = items.filter (item) ->
     !item.separator
 
-  self.accelerate = (key) ->
-    accelerateItem(items, key)
+  # TODO: This gets called per menu item when the state changes
+  # Could we shift it a little to only be called for the relevant subtree?
+  active = ->
+    isDescendant activeItem()?.element, self.element
 
-  self.cursor = (direction) ->
-    console.log "Menu Cursor", direction
-    switch direction
-      when "Up"
-        self.advance(-1)
-      when "Down"
-        self.advance(1)
-
-  self.parent = parent
-  self.items = items
-  self.advance = (n) ->
-    activeItem advance(navigableItems, n)
-  self.navigableItems = navigableItems
-
-  self.element = MenuTemplate
-    class: ->
-      [
-        "active" if active()
-      ].concat classes()
-    click: handle (e) ->
-      activeItem self
-    items: items.map asElement
-  
-  console.log self
+  Object.assign self,
+    accelerate: (key) ->
+      console.log "Acc", key
+      accelerateItem(items, key)
+    cursor: (direction) ->
+      switch direction
+        when "Up"
+          self.advance(-1)
+        when "Down"
+          self.advance(1)
+    parent: parent
+    items: items
+    advance: (n) ->
+      activeItem advance(navigableItems, n)
+    navigableItems: navigableItems
+    element: MenuTemplate
+      class: ->
+        [
+          "active" if active()
+        ].concat classes()
+      click: handle (e) ->
+        activeItem self
+      items: items.map asElement
 
   return self

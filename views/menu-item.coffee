@@ -38,8 +38,10 @@ module.exports = ({label, MenuView, items, contextRoot, parent}) ->
     return if e?.defaultPrevented
     e?.preventDefault()
 
+    console.log "click", e, self
+
     if submenu
-      activeItem self
+      activeItem submenu
       return
 
     console.log "Handling", actionName
@@ -78,23 +80,24 @@ module.exports = ({label, MenuView, items, contextRoot, parent}) ->
     hotkey: hotkey
     disabled: disabled
 
-  self.accelerator = accelerator
-  self.accelerate = ->
-    click()
-  self.click = click
-  self.parent = parent
-  self.element = element
-  self.cursor = (direction) ->
-    console.log "Item Cursor", direction
-    if submenu and direction is "Right"
-      # Select the first navigable item of the submenu
-      activeItem submenu.navigableItems[0]
-    else if parent.parent and direction is "Left"
-      # parent is the menu,
-      # parent.parent is the item in the menu containing the parent
-      activeItem parent.parent
-    else
-      parent.cursor(direction)
+  Object.assign self,
+    accelerator: accelerator
+    accelerate: (k) ->
+      parent.accelerate k
+    click: click
+    parent: parent
+    element: element
+    cursor: (direction) ->
+      console.log "Item Cursor", direction
+      if submenu and direction is "Right"
+        # Select the first navigable item of the submenu
+        activeItem submenu.navigableItems[0]
+      else if parent.parent and direction is "Left"
+        # parent is the menu,
+        # parent.parent is the item in the menu containing the parent
+        activeItem parent.parent
+      else
+        parent.cursor(direction)
 
   return self
 

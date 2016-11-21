@@ -1,7 +1,6 @@
 Action = require "./action"
 Modal = require "./modal"
 MenuBarView = require "./views/menu-bar"
-FileMenuView = require "./views/file-menu"
 MenuItemView = require "./views/menu-item"
 MenuView = require "./views/menu"
 Observable = require "observable"
