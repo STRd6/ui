@@ -2,7 +2,7 @@ MenuTemplate = require "../templates/menu"
 
 # MenuItem = require "./menu-item"
 
-{asElement, F, htmlEscape, handle, isDescendant} = require "../util"
+{advance, asElement, F, htmlEscape, handle, isDescendant} = require "../util"
 
 # MenuView
 
@@ -19,7 +19,7 @@ MenuTemplate = require "../templates/menu"
 #   ]]
 # ]
 #
-module.exports = MenuView = ({items, contextRoot}) ->
+module.exports = MenuView = ({items, contextRoot, parent}) ->
   console.log "MenuView", items
   self = {}
 
@@ -43,10 +43,12 @@ module.exports = MenuView = ({items, contextRoot}) ->
           items: submenuItems
           MenuView: MenuView
           contextRoot: contextRoot
+          parent: self
       else
         MenuItemView
           label: item
           contextRoot: contextRoot
+          parent: self
 
   navigableItems = items.filter (item) ->
     !item.separator
@@ -55,12 +57,14 @@ module.exports = MenuView = ({items, contextRoot}) ->
     accelerateItem(items, key)
 
   self.cursor = (direction) ->
+    console.log "Menu Cursor", direction
     switch direction
       when "Up"
         self.advance(-1)
       when "Down"
         self.advance(1)
 
+  self.parent = parent
   self.items = items
   self.advance = (n) ->
     activeItem advance(navigableItems, n)
@@ -80,7 +84,7 @@ module.exports = MenuView = ({items, contextRoot}) ->
 
   return self
 
-MenuItemView = ({label, MenuView, items, contextRoot}) ->
+MenuItemView = ({label, MenuView, items, contextRoot, parent}) ->
   self = {}
   console.log "MenuItem", label
 
@@ -90,8 +94,15 @@ MenuItemView = ({label, MenuView, items, contextRoot}) ->
   active = ->
     isDescendant activeItem()?.element, element
 
+  self.active = active
+
   if items
-    content = MenuView({items, contextRoot}).element
+    submenu = MenuView({
+      items
+      contextRoot
+      parent: self
+    })
+    content = submenu.element
 
   [title, accelerator] = formatLabel label
 
@@ -131,7 +142,19 @@ MenuItemView = ({label, MenuView, items, contextRoot}) ->
     # hotkey: hotkey
     # disabled: disabled
 
+  self.parent = parent
   self.element = element
+  self.cursor = (direction) ->
+    console.log "Item Cursor", direction
+    if submenu and direction is "Right"
+      # Select the first navigable item of the submenu
+      activeItem submenu.navigableItems[0]
+    else if parent.parent and direction is "Left"
+      # parent is the menu,
+      # parent.parent is the item in the menu containing the parent
+      activeItem parent.parent
+    else
+      parent.cursor(direction)
 
   return self
 
