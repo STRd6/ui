@@ -33,13 +33,24 @@ ul.menu-options, ul.menu-bar, ul.menu
       color: white
 
     > label
-      display: block
+      display: flex
       padding: 0 0.25em
       white-space: nowrap
 
+      > *
+        flex: 1 1 auto
+
       > span.hotkey
-        float: right
         margin-left: 1em
+
+        &:empty
+          margin-left: 0
+
+      > .decoration
+        flex: 0 1 auto
+        line-height: 1em
+        text-align: right
+        margin-left: 0.5em
 
         &:empty
           margin-left: 0
@@ -81,11 +92,6 @@ ul.menu-options, ul.menu
   // Submenu
   > li.menu
     position: relative
-
-    > label::after
-      content: "▸"
-      float: right
-      line-height: 1em
 
     > ul.menu-options, > ul.menu
       position: absolute
