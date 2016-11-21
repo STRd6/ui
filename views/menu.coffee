@@ -1,4 +1,6 @@
-{advance, asElement, F, S, htmlEscape, handle, isDescendant} = require "../util"
+Observable = require "observable"
+
+{advance, accelerateItem, asElement, F, S, htmlEscape, handle, isDescendant} = require "../util"
 
 MenuTemplate = require "../templates/menu"
 MenuItemTemplate = require "../templates/menu-item"
@@ -24,8 +26,7 @@ module.exports = MenuView = ({items, classes, contextRoot, parent}) ->
   console.log "MenuView", items
   self = {}
 
-  console.log classes
-  classes ?= ["menu"]
+  classes ?= -> ["menu"]
 
   {activeItem} = contextRoot
 
@@ -78,7 +79,7 @@ module.exports = MenuView = ({items, classes, contextRoot, parent}) ->
     class: ->
       [
         "active" if active()
-      ].concat classes
+      ].concat classes()
     click: handle (e) ->
       activeItem self
     items: items.map asElement
@@ -116,31 +117,32 @@ MenuItemView = ({label, MenuView, items, contextRoot, parent}) ->
   disabled = S(action, "disabled", false)
   hotkey = S(action, "hotkey", "")
 
+  click = (e) ->
+    return if disabled()
+    return if e?.defaultPrevented
+    e?.preventDefault()
+
+    if submenu
+      activeItem self
+      return
+
+    console.log "Handling", actionName
+
+    action?.call?(handlers)
+
+    # TODO: More cleanup than just clearing the active item, like also we
+    # should clear accelerator state, and maybe return focus to previously
+    # focused element.
+    # contextRoot.finish?
+    activeItem null
+
   element = MenuItemTemplate
     class: ->
       [
         "menu" if items
         "active" if active()
       ]
-    # TODO: Don't handle click on disabled
-    click: (e) ->
-      return if disabled()
-      return if e?.defaultPrevented
-      e?.preventDefault()
-
-      if submenu
-        activeItem self
-        return
-
-      console.log "Handling", actionName
-
-      action?.call?(handler)
-
-      # TODO: More cleanup than just clearing the active item, like also we
-      # should clear accelerator state, and maybe return focus to previously
-      # focused element.
-      # contextRoot.finish?
-      activeItem null
+    click: click
 
     mousemove: (e) ->
       # Click to activate top level menus unless a menu is already active
@@ -160,6 +162,10 @@ MenuItemView = ({label, MenuView, items, contextRoot, parent}) ->
     hotkey: hotkey
     disabled: disabled
 
+  self.accelerator = accelerator
+  self.accelerate = ->
+    click()
+  self.click = click
   self.parent = parent
   self.element = element
   self.cursor = (direction) ->

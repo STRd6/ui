@@ -5,7 +5,7 @@ Observable = require "observable"
 
 MenuView = require "./menu"
 
-{asElement, accelerateItem, isDescendant, handle} = require "../util"
+{isDescendant} = require "../util"
 
 module.exports = ({items, handlers}) ->
   acceleratorActive = Observable false
@@ -18,7 +18,11 @@ module.exports = ({items, handlers}) ->
     handlers: handlers
 
   self = MenuView
-    classes: ["menu-bar"]
+    classes: ->
+      [
+        "menu-bar"
+        "accelerator-active" if acceleratorActive()
+      ]
     items: items
     contextRoot: contextRoot
 
