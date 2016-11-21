@@ -38,8 +38,6 @@ module.exports = ({label, MenuView, items, contextRoot, parent}) ->
     return if e?.defaultPrevented
     e?.preventDefault()
 
-    console.log "click", e, self
-
     if submenu
       activeItem submenu
       return
@@ -82,8 +80,8 @@ module.exports = ({label, MenuView, items, contextRoot, parent}) ->
 
   Object.assign self,
     accelerator: accelerator
-    accelerate: (k) ->
-      parent.accelerate k
+    accelerate: (key) ->
+      parent.accelerate key
     click: click
     parent: parent
     element: element

@@ -5,7 +5,7 @@ Observable = require "observable"
 
 MenuView = require "./menu"
 
-{isDescendant} = require "../util"
+{isDescendant, advance} = require "../util"
 
 module.exports = ({items, handlers}) ->
   acceleratorActive = Observable false
@@ -27,6 +27,15 @@ module.exports = ({items, handlers}) ->
     contextRoot: contextRoot
 
   element = self.element
+
+  # Redefine cursor movement
+  # TODO: Need to also redefine expand to down and not right on menu items
+  self.cursor = (direction) ->
+    switch direction
+      when "Right"
+        self.advance(1)
+      when "Left"
+        self.advance(-1)
 
   deactivate = ->
     activeItem null

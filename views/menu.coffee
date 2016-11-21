@@ -60,7 +60,6 @@ module.exports = MenuView = ({items, classes, contextRoot, parent}) ->
 
   Object.assign self,
     accelerate: (key) ->
-      console.log "Acc", key
       accelerateItem(items, key)
     cursor: (direction) ->
       switch direction
