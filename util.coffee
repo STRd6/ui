@@ -79,7 +79,7 @@ entityMap =
 # Get the view associated with a dom element
 # This will let us use the dom tree rather than manage a separate tree
 # to dispatch events at the view level
-# the assumption is that a .view property is written to the root element in the 
+# the assumption is that a .view property is written to the root element in the
 # view when rendering a view's template element
 elementView = (element) ->
   return unless element

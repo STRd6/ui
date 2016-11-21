@@ -13,17 +13,18 @@ MenuView = require "./menu"
 
 {isDescendant} = require "../util"
 
-module.exports = (params={}) ->
-  params.contextRoot ?=
-    activeItem: Observable null
+module.exports = ({items, handlers}) ->
+  activeItem = Observable null
 
-  contextRoot = params.contextRoot
-  activeItem = contextRoot.activeItem
+  contextRoot =
+    activeItem: activeItem
+    handlers: handlers
 
-  self = MenuView params
+  self = MenuView
+    items: items
+    contextRoot: contextRoot
 
   element = self.element
-  
   element.view = self
 
   self.contextRoot = contextRoot
@@ -45,7 +46,6 @@ module.exports = (params={}) ->
 
   element.setAttribute("tabindex", "-1")
   element.addEventListener "keydown", (e) ->
-    console.log e
     {key} = e
 
     switch key

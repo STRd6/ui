@@ -1,5 +1,6 @@
 Action = require "./action"
 Modal = require "./modal"
+MenuBarView = require "./views/menu-bar"
 FileMenuView = require "./views/file-menu"
 MenuItemView = require "./views/menu-item"
 MenuView = require "./views/menu"
@@ -17,22 +18,25 @@ if PACKAGE.name is "ROOT"
   document.head.appendChild style
 
   sampleMenuParsed = require "../samples/notepad-menu"
-  {element} = FileMenuView sampleMenuParsed,
-    new: (Action ->
-      console.log 'New!'
-    , "Ctrl+N")
-    pageSetup: (Action ->
-      console.log "settin up a page"
-    , "Ctrl+Shift+P")
-    print: ->
-      p = document.createElement('p')
-      p.innerText = "hello"
-      Modal.show p
+  {element} = MenuBarView 
+    items: sampleMenuParsed,
+    handlers:
+      new: (Action ->
+        console.log 'New!'
+      , "Ctrl+N")
+      pageSetup: (Action ->
+        console.log "settin up a page"
+      , "Ctrl+Shift+P")
+      print: ->
+        p = document.createElement('p')
+        p.innerText = "hello"
+        Modal.show p
 
   document.body.appendChild element
 
   contextMenu = ContextMenuView
     items: sampleMenuParsed[1][1]
+    handlers: {}
 
   document.addEventListener "contextmenu", (e) ->
     e.preventDefault()

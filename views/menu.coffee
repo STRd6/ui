@@ -1,12 +1,13 @@
-MenuTemplate = require "../templates/menu"
+{advance, asElement, F, S, htmlEscape, handle, isDescendant} = require "../util"
 
+MenuTemplate = require "../templates/menu"
+MenuItemTemplate = require "../templates/menu-item"
+
+SeparatorView = require "./menu-separator"
 # MenuItem = require "./menu-item"
 
-{advance, asElement, F, htmlEscape, handle, isDescendant} = require "../util"
-
 # MenuView
-
-
+# 
 # items is an array of item data
 # An item datum is either a string
 # or a pair of [label:string, items...]
@@ -19,9 +20,12 @@ MenuTemplate = require "../templates/menu"
 #   ]]
 # ]
 #
-module.exports = MenuView = ({items, contextRoot, parent}) ->
+module.exports = MenuView = ({items, classes, contextRoot, parent}) ->
   console.log "MenuView", items
   self = {}
+
+  console.log classes
+  classes ?= ["menu"]
 
   {activeItem} = contextRoot
 
@@ -73,9 +77,8 @@ module.exports = MenuView = ({items, contextRoot, parent}) ->
   self.element = MenuTemplate
     class: ->
       [
-        "menu"
         "active" if active()
-      ]
+      ].concat classes
     click: handle (e) ->
       activeItem self
     items: items.map asElement
@@ -88,7 +91,7 @@ MenuItemView = ({label, MenuView, items, contextRoot, parent}) ->
   self = {}
   console.log "MenuItem", label
 
-  {activeItem} = contextRoot
+  {activeItem, handlers} = contextRoot
   # TODO: This gets called per menu item when the state changes
   # Could we shift it a little to only be called for the relevant subtree?
   active = ->
@@ -106,6 +109,13 @@ MenuItemView = ({label, MenuView, items, contextRoot, parent}) ->
 
   [title, accelerator] = formatLabel label
 
+  # Hook in to Action objects so we can display hotkeys
+  # and enabled/disabled statuses.
+  actionName = formatAction label
+  action = handlers[actionName]
+  disabled = S(action, "disabled", false)
+  hotkey = S(action, "hotkey", "")
+
   element = MenuItemTemplate
     class: ->
       [
@@ -113,16 +123,24 @@ MenuItemView = ({label, MenuView, items, contextRoot, parent}) ->
         "active" if active()
       ]
     # TODO: Don't handle click on disabled
-    click: handle (e) ->
-      unless disabled()
-        console.log "Handled", actionName
+    click: (e) ->
+      return if disabled()
+      return if e?.defaultPrevented
+      e?.preventDefault()
 
-        action?.call?(handler)
+      if submenu
+        activeItem self
+        return
 
-        # TODO: More cleanup than just clearing the active item, like also we
-        # should clear accelerator state, and maybe return focus to previously
-        # focused element.
-        activeItem null
+      console.log "Handling", actionName
+
+      action?.call?(handler)
+
+      # TODO: More cleanup than just clearing the active item, like also we
+      # should clear accelerator state, and maybe return focus to previously
+      # focused element.
+      # contextRoot.finish?
+      activeItem null
 
     mousemove: (e) ->
       # Click to activate top level menus unless a menu is already active
@@ -139,8 +157,8 @@ MenuItemView = ({label, MenuView, items, contextRoot, parent}) ->
     title: title
     content: content
     decoration: "▸" if items
-    # hotkey: hotkey
-    # disabled: disabled
+    hotkey: hotkey
+    disabled: disabled
 
   self.parent = parent
   self.element = element
@@ -157,16 +175,6 @@ MenuItemView = ({label, MenuView, items, contextRoot, parent}) ->
       parent.cursor(direction)
 
   return self
-
-MenuSeparatorTemplate = require "../templates/menu-separator"
-SeparatorView = ->
-  element: MenuSeparatorTemplate()
-  separator: true
-
-Observable = require "observable"
-
-MenuTemplate = require "../templates/menu"
-MenuItemTemplate = require "../templates/menu-item"
 
 # Parse out custom action symbol from entries like:
 #

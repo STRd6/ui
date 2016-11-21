@@ -72,17 +72,6 @@ ul.menu-options, ul.menu
   padding-bottom: 3px
   position: absolute
 
-ul.menu-bar
-  margin: 0
-  padding: 0
-
-  > li
-    display: inline-block
-
-  &.accelerator-active
-    span.accelerator
-      text-decoration: underline
-
 ul.menu-options, ul.menu
   display: none
 
@@ -104,3 +93,17 @@ li.menu.active
     background-color: lightgrey
     color: black
     display: block
+
+ul.menu-bar
+  display: block
+  margin: 0
+  padding: 0
+
+  > li
+    display: inline-block
+    > label > .decoration
+      display: none
+
+  &.accelerator-active
+    span.accelerator
+      text-decoration: underline
