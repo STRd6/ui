@@ -29,7 +29,6 @@ module.exports = ({items, handlers}) ->
   element = self.element
 
   # Redefine cursor movement
-  # TODO: Need to also redefine expand to down and not right on menu items
   self.cursor = (direction) ->
     switch direction
       when "Right"
@@ -37,11 +36,15 @@ module.exports = ({items, handlers}) ->
       when "Left"
         self.advance(-1)
 
+  # Redefine expand to down and not right on menu items
   self.items.forEach (item) ->
+    item.horizontal = true
     item.cursor = (direction) ->
+      console.log "Item", direction
       if direction is "Down"
-        # Activate first submenu item
-        activeItem item.submenu?.items[0]
+        item.submenu?.advance(1)
+      else if direction is "Up"
+        item.submenu?.advance(-1)
       else
         item.parent.cursor direction
 

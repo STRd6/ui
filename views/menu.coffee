@@ -9,7 +9,7 @@ SeparatorView = require "./menu-separator"
 MenuItemView = require "./menu-item"
 
 # MenuView
-# 
+#
 # items is an array of item data
 # An item datum is either a string
 # or a pair of [label:string, items...]

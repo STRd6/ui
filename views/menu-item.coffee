@@ -94,7 +94,10 @@ module.exports = ({label, MenuView, items, contextRoot, parent}) ->
       else if parent.parent and direction is "Left"
         # parent is the menu,
         # parent.parent is the item in the menu containing the parent
-        activeItem parent.parent
+        if parent.parent.horizontal
+          parent.parent.cursor(direction)
+        else
+          activeItem parent.parent
       else
         parent.cursor(direction)
 
