@@ -10,17 +10,22 @@ Modals
 Menus
   File Menu
   Context Menu
+  Keyboard Navigation (Up, Down, Left, Right)
+  Accelerator Keys
+  Hotkeys
 
-Popup Notifications
+Toaster/Popup Notifications
+  Animations
+  Native notifications?
 
 Global Hotkeys
-
-Windows
 
 Loader / Progress
 
 TOMAYBE
 =======
+
+Draggable Windows
 
 Forms
 

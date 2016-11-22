@@ -1,50 +1,58 @@
+# The MenuBar is a list MenuItems arranged in a bar across the top of a page or
+# window.
+
 Observable = require "observable"
 
-MenuTemplate = require "../templates/menu"
-MenuItemView = require "./menu-item"
+MenuView = require "./menu"
 
-{asElement, accelerateItem, isDescendant} = require "../util"
+{isDescendant, advance} = require "../util"
 
-# TODO: Can this be combined with MenuItemView to reduce some redundancy at the
-# top level?
-module.exports = (data, handler) ->
+module.exports = ({items, handlers}) ->
   acceleratorActive = Observable false
   # Track active menus and item for navigation
   activeItem = Observable null
   previouslyFocusedElement = null
 
-  self =
-    element: null
-    accelerate: (key) ->
-      accelerateItem menuItems, key
-    items: null
-    cursor: ->
-      activeItem menuItems[0]
+  contextRoot =
+    activeItem: activeItem
+    handlers: handlers
 
-  self.items = menuItems = data.map (item) ->
-    MenuItemView(item, handler, self, self, activeItem)
-
-  # Dispatch the key to the active menu element
-  accelerate = (key) ->
-    activeItem()?.accelerate(key)
-
-  element = MenuTemplate
-    items: menuItems.map asElement
-    log: (e) ->
-      console.log e
-    class: ->
+  self = MenuView
+    classes: ->
       [
-        "menu-bar"
+        "bar"
         "accelerator-active" if acceleratorActive()
       ]
+    items: items
+    contextRoot: contextRoot
+
+  element = self.element
+
+  # Redefine cursor movement
+  self.cursor = (direction) ->
+    switch direction
+      when "Right"
+        self.advance(1)
+      when "Left"
+        self.advance(-1)
+
+  # Redefine expand to down and not right on menu items
+  self.items.forEach (item) ->
+    item.horizontal = true
+    item.cursor = (direction) ->
+      console.log "Item", direction
+      if direction is "Down"
+        item.submenu?.advance(1)
+      else if direction is "Up"
+        item.submenu?.advance(-1)
+      else
+        item.parent.cursor direction
 
   deactivate = ->
     activeItem null
     acceleratorActive false
     # De-activate menu and focus previously focused element
     previouslyFocusedElement?.focus()
-
-  # TODO: Handle mouseout
 
   document.addEventListener "mousedown", (e) ->
     unless isDescendant(e.target, element)
@@ -68,6 +76,11 @@ module.exports = (data, handler) ->
           activeItem self unless activeItem()
           acceleratorActive true
 
+  # Dispatch the key to the active menu element
+  accelerateIfActive = (key) ->
+    if acceleratorActive()
+      activeItem()?.accelerate(key)
+
   # We need to be able to focus the menu to receive keyboard events on it
   element.setAttribute("tabindex", "-1")
   element.addEventListener "keydown", (e) ->
@@ -76,16 +89,16 @@ module.exports = (data, handler) ->
     switch key
       when "ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"
         e.preventDefault()
-        
-        currentItem = activeItem()
         direction = key.replace("Arrow", "")
-        currentItem.cursor(direction)
+
+        currentItem = activeItem()
+
+        if currentItem
+          currentItem.cursor(direction)
 
       when "Escape"
         deactivate()
       else
-        accelerate key.toLowerCase() if acceleratorActive()
-
-  self.element = element
+        accelerateIfActive key.toLowerCase()
 
   return self

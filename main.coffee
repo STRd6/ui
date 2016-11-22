@@ -1,6 +1,12 @@
 Action = require "./action"
 Modal = require "./modal"
-MenuView = require "./views/file-menu"
+MenuBarView = require "./views/menu-bar"
+MenuItemView = require "./views/menu-item"
+MenuView = require "./views/menu"
+Observable = require "observable"
+ContextMenuView = require "./views/context-menu"
+
+global.assert = require "./lib/assert"
 
 if PACKAGE.name is "ROOT"
   style = document.createElement "style"
@@ -11,23 +17,37 @@ if PACKAGE.name is "ROOT"
   document.head.appendChild style
 
   sampleMenuParsed = require "../samples/notepad-menu"
-  {element} = MenuView sampleMenuParsed,
-    new: (Action ->
-      console.log 'New!'
-    , "Ctrl+N")
-    pageSetup: (Action ->
-      console.log "settin up a page"
-    , "Ctrl+Shift+P")
-    print: ->
-      p = document.createElement('p')
-      p.innerText = "hello"
-      Modal.show p
+  {element} = MenuBarView 
+    items: sampleMenuParsed,
+    handlers:
+      new: (Action ->
+        console.log 'New!'
+      , "Ctrl+N")
+      pageSetup: (Action ->
+        console.log "settin up a page"
+      , "Ctrl+Shift+P")
+      print: ->
+        p = document.createElement('p')
+        p.innerText = "hello"
+        Modal.show p
 
   document.body.appendChild element
 
+  contextMenu = ContextMenuView
+    items: sampleMenuParsed[1][1]
+    handlers: {}
+
+  document.addEventListener "contextmenu", (e) ->
+    e.preventDefault()
+
+    contextMenu.display
+      inElement: document.body
+      x: e.pageX
+      y: e.pageY
+
 module.exports = {
   Modal
-  MenuView
+  MenuItemView
   Style:
     modal: require "./style/modal"
 }
