@@ -18,7 +18,7 @@ no-select()
   -webkit-user-select: none
   -ms-user-select: none
 
-ul.menu-options, ul.menu-bar, ul.menu
+menu
   no-select()
 
   background-color: lightgrey
@@ -61,19 +61,18 @@ ul.menu-options, ul.menu-bar, ul.menu
       &.active
         background-color: rgba(0, 0, 0, 0.125)
 
-ul.menu-options, ul.menu
+menu.options
   border-top: 1px solid rgba(255, 255, 255, 0.5)
   border-left: 1px solid rgba(255, 255, 255, 0.5)
   border-right: 1px solid rgba(0, 0, 0, 0.5)
 
   box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5)
 
+  display: none
+
   padding: 2px
   padding-bottom: 3px
   position: absolute
-
-ul.menu-options, ul.menu
-  display: none
 
   &.active
     display: block
@@ -82,22 +81,23 @@ ul.menu-options, ul.menu
   > li.menu
     position: relative
 
-    > ul.menu-options, > ul.menu
+    > menu
       position: absolute
       left: 100%
       top: -3px
       margin-left: 1px
 
 li.menu.active
-  > ul.menu-options, > ul.menu
+  > menu
     background-color: lightgrey
     color: black
     display: block
 
-ul.menu-bar
+menu.bar
   display: block
   margin: 0
   padding: 0
+  position: initial
 
   > li
     display: inline-block

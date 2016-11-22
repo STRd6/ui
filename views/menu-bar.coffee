@@ -20,7 +20,7 @@ module.exports = ({items, handlers}) ->
   self = MenuView
     classes: ->
       [
-        "menu-bar"
+        "bar"
         "accelerator-active" if acceleratorActive()
       ]
     items: items
