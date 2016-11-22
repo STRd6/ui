@@ -25,41 +25,42 @@ menu
   border-bottom: 1px solid rgba(0, 0, 0, 0.5)
   margin: 0
 
-  > li
-    list-style-type: none
+menu-item
+  display: block
+  list-style-type: none
+
+  &.active
+    background-color: blue
+    color: white
+
+  > label
+    display: flex
+    padding: 0 0.25em
+    white-space: nowrap
+
+    > *
+      flex: 1 1 auto
+
+    > span.hotkey
+      margin-left: 1em
+
+      &:empty
+        margin-left: 0
+
+    > .decoration
+      flex: 0 1 auto
+      line-height: 1em
+      text-align: right
+      margin-left: 0.5em
+
+      &:empty
+        margin-left: 0
+
+  &[disabled]
+    color: gray
 
     &.active
-      background-color: blue
-      color: white
-
-    > label
-      display: flex
-      padding: 0 0.25em
-      white-space: nowrap
-
-      > *
-        flex: 1 1 auto
-
-      > span.hotkey
-        margin-left: 1em
-
-        &:empty
-          margin-left: 0
-
-      > .decoration
-        flex: 0 1 auto
-        line-height: 1em
-        text-align: right
-        margin-left: 0.5em
-
-        &:empty
-          margin-left: 0
-
-    &[disabled]
-      color: gray
-
-      &.active
-        background-color: rgba(0, 0, 0, 0.125)
+      background-color: rgba(0, 0, 0, 0.125)
 
 menu.options
   border-top: 1px solid rgba(255, 255, 255, 0.5)
@@ -78,7 +79,7 @@ menu.options
     display: block
 
   // Submenu
-  > li.menu
+  > menu-item.menu
     position: relative
 
     > menu
@@ -87,7 +88,7 @@ menu.options
       top: -3px
       margin-left: 1px
 
-li.menu.active
+menu-item.menu.active
   > menu
     background-color: lightgrey
     color: black
@@ -99,7 +100,7 @@ menu.bar
   padding: 0
   position: initial
 
-  > li
+  > menu-item
     display: inline-block
     > label > .decoration
       display: none
