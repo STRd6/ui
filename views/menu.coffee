@@ -67,6 +67,8 @@ module.exports = MenuView = ({items, classes, contextRoot, parent}) ->
           self.advance(-1)
         when "Down"
           self.advance(1)
+        else
+          parent.parent?.cursor(direction)
     parent: parent
     items: items
     advance: (n) ->

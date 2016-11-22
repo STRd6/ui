@@ -37,6 +37,14 @@ module.exports = ({items, handlers}) ->
       when "Left"
         self.advance(-1)
 
+  self.items.forEach (item) ->
+    item.cursor = (direction) ->
+      if direction is "Down"
+        # Activate first submenu item
+        activeItem item.submenu?.items[0]
+      else
+        item.parent.cursor direction
+
   deactivate = ->
     activeItem null
     acceleratorActive false

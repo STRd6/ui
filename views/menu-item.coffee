@@ -85,6 +85,7 @@ module.exports = ({label, MenuView, items, contextRoot, parent}) ->
     click: click
     parent: parent
     element: element
+    submenu: submenu
     cursor: (direction) ->
       console.log "Item Cursor", direction
       if submenu and direction is "Right"
