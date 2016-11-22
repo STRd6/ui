@@ -8,11 +8,13 @@ Modals
   General
 
 Menus
-  File Menu
-  Context Menu
-  Keyboard Navigation (Up, Down, Left, Right)
-  Accelerator Keys
-  Hotkeys
+  ✔️File Menu
+  ✔️Context Menu
+  ✔️Keyboard Navigation (Up, Down, Left, Right)
+  ✔️Accelerator Keys
+  ✔️Display Hotkeys
+  ✔️Indicate Enabled/Disabled
+  ✔️Nested Submenus
 
 Toaster/Popup Notifications
   Animations

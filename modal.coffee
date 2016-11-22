@@ -1,3 +1,12 @@
+###
+Modal
+
+Display modal alerts or dialogs.
+
+###
+
+AlertTemplate = require "./templates/modal/alert"
+
 modal = document.createElement "div"
 modal.id = "modal"
 
@@ -25,6 +34,16 @@ module.exports = Modal =
     closeHandler?(dataForHandler)
     modal.classList.remove "active"
     empty(modal)
+
+  alert: (message) ->
+    new Promise (resolve) ->
+      element = AlertTemplate
+        title: "Alert"
+        message: message
+        confirm: ->
+          Modal.hide()
+
+      Modal.show element, resolve
 
 empty = (node) ->
   while node.hasChildNodes()

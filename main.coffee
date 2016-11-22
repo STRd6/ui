@@ -17,11 +17,11 @@ if PACKAGE.name is "ROOT"
   document.head.appendChild style
 
   sampleMenuParsed = require "../samples/notepad-menu"
-  {element} = MenuBarView 
+  {element} = MenuBarView
     items: sampleMenuParsed,
     handlers:
       new: (Action ->
-        console.log 'New!'
+        Modal.alert "yolo"
       , "Ctrl+N")
       pageSetup: (Action ->
         console.log "settin up a page"

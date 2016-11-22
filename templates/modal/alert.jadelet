@@ -1,0 +1,4 @@
+.alert
+  h1= @title
+  p= @message
+  button(click=@confirm) Ok

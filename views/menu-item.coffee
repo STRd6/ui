@@ -81,7 +81,10 @@ module.exports = ({label, MenuView, items, contextRoot, parent}) ->
   Object.assign self,
     accelerator: accelerator
     accelerate: (key) ->
-      parent.accelerate key
+      if submenu
+        submenu.accelerate key
+      else
+        parent.accelerate key
     click: click
     parent: parent
     element: element

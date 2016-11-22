@@ -3,15 +3,21 @@ UI
 
 Classic User Interface
 
-File Menu
----------
+Menus
+-----
 
-Classic file menu
+- Context Menu
+- Menu Bar
+- Nested submenus
 
-Simple DSL for creating menus and binding to 
+Simple DSL for creating menus and binding to handlers.
 
 Modals
 ------
+
+- Alert
+- Confirm
+- Prompt
 
 Promise returning prompts, confirms, etc.
 
