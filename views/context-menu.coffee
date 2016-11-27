@@ -23,6 +23,7 @@ module.exports = ({items, handlers}) ->
   self = MenuView
     items: items
     contextRoot: contextRoot
+    classes: -> ["context", "options"]
 
   element = self.element
   element.view = self

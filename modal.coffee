@@ -6,9 +6,9 @@ Display modal alerts or dialogs.
 ###
 
 AlertTemplate = require "./templates/modal/alert"
+ModalTemplate = require "./templates/modal"
 
-modal = document.createElement "div"
-modal.id = "modal"
+modal = ModalTemplate()
 
 modal.onclick = (e) ->
   if e.target is modal

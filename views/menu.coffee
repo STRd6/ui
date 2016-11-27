@@ -23,7 +23,6 @@ MenuItemView = require "./menu-item"
 # ]
 #
 module.exports = MenuView = ({items, classes, contextRoot, parent}) ->
-  console.log "MenuView", items
   self = {}
 
   classes ?= -> ["options"]

@@ -6,7 +6,6 @@ MenuItemTemplate = require "../templates/menu-item"
 # An item that appears in menus
 module.exports = ({label, MenuView, items, contextRoot, parent}) ->
   self = {}
-  console.log "MenuItem", label
 
   {activeItem, handlers} = contextRoot
   # TODO: This gets called per menu item when the state changes
