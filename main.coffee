@@ -3,6 +3,7 @@ Modal = require "./modal"
 MenuBarView = require "./views/menu-bar"
 MenuItemView = require "./views/menu-item"
 MenuView = require "./views/menu"
+ProgressView = require "./views/progress"
 Observable = require "observable"
 ContextMenuView = require "./views/context-menu"
 
@@ -28,6 +29,11 @@ if PACKAGE.name is "ROOT"
       confirm: ->
         Modal.confirm "Jawsome!"
         .then console.log
+      progress: ->
+        progressView = ProgressView
+          value: 0.5
+
+        Modal.show progressView.element
 
   document.body.appendChild element
 

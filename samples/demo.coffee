@@ -5,6 +5,7 @@ module.exports = parse """
     [A]lert
     [C]onfirm
     [P]rompt
+    P[r]ogress
   [T]est
     Test[1]
       Hello
