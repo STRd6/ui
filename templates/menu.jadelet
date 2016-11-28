@@ -1,1 +1,1 @@
-menu(@class @click)= @items
+menu(@class @click @style)= @items

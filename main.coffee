@@ -16,20 +16,18 @@ if PACKAGE.name is "ROOT"
   ].join("\n")
   document.head.appendChild style
 
-  sampleMenuParsed = require "../samples/notepad-menu"
+  sampleMenuParsed = require "../samples/demo"
   {element} = MenuBarView
     items: sampleMenuParsed,
     handlers:
-      new: (Action ->
+      alert: ->
         Modal.alert "yolo"
-      , "Ctrl+N")
-      pageSetup: (Action ->
-        console.log "settin up a page"
-      , "Ctrl+Shift+P")
-      print: ->
-        p = document.createElement('p')
-        p.innerText = "hello"
-        Modal.show p
+      prompt: ->
+        Modal.prompt "Pretty cool, eh?", "Yeah!"
+        .then console.log
+      confirm: ->
+        Modal.confirm "Jawsome!"
+        .then console.log
 
   document.body.appendChild element
 
@@ -38,12 +36,13 @@ if PACKAGE.name is "ROOT"
     handlers: {}
 
   document.addEventListener "contextmenu", (e) ->
-    e.preventDefault()
-
-    contextMenu.display
-      inElement: document.body
-      x: e.pageX
-      y: e.pageY
+    if e.target is document.body
+      e.preventDefault()
+  
+      contextMenu.display
+        inElement: document.body
+        x: e.pageX
+        y: e.pageY
 
 module.exports = {
   Modal

@@ -22,7 +22,7 @@ MenuItemView = require "./menu-item"
 #   ]]
 # ]
 #
-module.exports = MenuView = ({items, classes, contextRoot, parent}) ->
+module.exports = MenuView = ({items, classes, style, contextRoot, parent}) ->
   self = {}
 
   classes ?= -> ["options"]
@@ -54,6 +54,8 @@ module.exports = MenuView = ({items, classes, contextRoot, parent}) ->
 
   # TODO: This gets called per menu item when the state changes
   # Could we shift it a little to only be called for the relevant subtree?
+  # Possible solution: find the common ancestor of the new active and the previous
+  # active and only update the necessary ones
   active = ->
     isDescendant activeItem()?.element, self.element
 
@@ -74,6 +76,7 @@ module.exports = MenuView = ({items, classes, contextRoot, parent}) ->
       activeItem advance(navigableItems, n)
     navigableItems: navigableItems
     element: MenuTemplate
+      style: style
       class: ->
         [
           "active" if active()

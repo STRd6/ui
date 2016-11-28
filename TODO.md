@@ -2,13 +2,13 @@ TODO
 ====
 
 Modals
-  Alert
-  Prompt
-  Confirm
-  General
+  ✔️Alert
+  ✔️Prompt
+  ✔Confirm
+  ✔General
 
 Menus
-  ✔️File Menu
+  ✔️Menu Bar
   ✔️Context Menu
   ✔️Keyboard Navigation (Up, Down, Left, Right)
   ✔️Accelerator Keys
@@ -23,6 +23,14 @@ Toaster/Popup Notifications
 Global Hotkeys
 
 Loader / Progress
+
+Documentation
+  Modals
+  Menus
+  Context Meuns
+
+Examples
+  Modal Progress Bar
 
 TOMAYBE
 =======

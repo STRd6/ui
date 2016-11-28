@@ -3,6 +3,9 @@ ContextMenu
 
 Display a context menu!
 
+Questions:
+
+Should we be able to update the options in the menu after creation?
 
 ###
 
@@ -15,6 +18,8 @@ MenuView = require "./menu"
 
 module.exports = ({items, handlers}) ->
   activeItem = Observable null
+  top = Observable ""
+  left = Observable ""
 
   contextRoot =
     activeItem: activeItem
@@ -24,23 +29,26 @@ module.exports = ({items, handlers}) ->
     items: items
     contextRoot: contextRoot
     classes: -> ["context", "options"]
+    style: ->
+      "top: #{top()}px; left: #{left()}px"
 
   element = self.element
   element.view = self
 
   self.contextRoot = contextRoot
   self.display = ({inElement, x, y}) ->
-    element.style.top = "#{y}px"
-    element.style.left = "#{x}px"
+    top(y)
+    left(x)
 
     # The element must be added to the dom before it can be activated
     # it must be visible before it can be focused
-    inElement.appendChild element
+    (inElement or document.body).appendChild element
     activeItem self
     element.focus()
 
-  # TODO: Find out if there is a way to avoid leaking
-  # document listeners when creating/destroying many context menus
+  # This must be attached to the document body so we can de-activate when
+  # a person presses the mouse outside of our menu
+  # TODO: How should we clean up this global listener?
   document.addEventListener "mousedown", (e) ->
     unless isDescendant(e.target, element)
       activeItem null

@@ -1,0 +1,8 @@
+form(submit=@confirm tabindex=-1)
+  h1= @title
+  p= @message
+  - if @defaultValue?
+    input(type="text" value=@defaultValue)
+  button OK
+  - if @cancel
+    button(click=@cancel) Cancel

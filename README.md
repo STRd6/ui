@@ -16,7 +16,7 @@ Simple DSL for creating menus and binding to handlers.
 {ContextMenu} = require "ui"
 
 contextMenu = ContextMenu()
-document.body.appendChild contextMenu
+document.body.appendChild contextMenu.element
 ```
 
 Modals
