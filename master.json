@@ -20,7 +20,7 @@
     },
     "TODO.md": {
       "path": "TODO.md",
-      "content": "TODO\n====\n\nModals\n  ✔️Alert\n  ✔️Prompt\n  ✔Confirm\n  ✔General\n\nMenus\n  ✔️Menu Bar\n  ✔️Context Menu\n  ✔️Keyboard Navigation (Up, Down, Left, Right)\n  ✔️Accelerator Keys\n  ✔️Display Hotkeys\n  ✔️Indicate Enabled/Disabled\n  ✔️Nested Submenus\n\nToaster/Popup Notifications\n  Animations\n  Native notifications?\n\nGlobal Hotkeys\n\nLoader / Progress\n\nDocumentation\n  Modals\n  Menus\n  Context Meuns\n\nExamples\n  Modal Progress Bar\n\nTOMAYBE\n=======\n\nDraggable Windows\n\nForms\n\nTables/Grids\n",
+      "content": "TODO\n====\n\nModals\n  ✔️Alert\n  ✔️Prompt\n  ✔Confirm\n  ✔General\n\nMenus\n  ✔️Menu Bar\n  ✔️Context Menu\n  ✔️Keyboard Navigation (Up, Down, Left, Right)\n  ✔️Accelerator Keys\n  ✔️Display Hotkeys\n  ✔️Indicate Enabled/Disabled\n  ✔️Nested Submenus\n\nToaster/Popup Notifications\n  Animations\n  Native notifications?\n\nGlobal Hotkeys\n\nLoader / Progress\n\nDocumentation\n  Modals\n  Menus\n  Context Menus\n  Hotkeys\n\nExamples\n  Modal Progress Bar\n\nTOMAYBE\n=======\n\nDraggable Windows\n\nForms\n\nTables/Grids\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -50,7 +50,7 @@
     },
     "main.coffee": {
       "path": "main.coffee",
-      "content": "Action = require \"./action\"\nModal = require \"./modal\"\nMenuBarView = require \"./views/menu-bar\"\nMenuItemView = require \"./views/menu-item\"\nMenuView = require \"./views/menu\"\nProgressView = require \"./views/progress\"\nObservable = require \"observable\"\nContextMenuView = require \"./views/context-menu\"\n\nglobal.assert = require \"./lib/assert\"\n\nif PACKAGE.name is \"ROOT\"\n  style = document.createElement \"style\"\n  style.innerHTML = [\n    require \"./style/main\"\n    require \"./style/modal\"\n  ].join(\"\\n\")\n  document.head.appendChild style\n\n  sampleMenuParsed = require \"../samples/demo\"\n  {element} = MenuBarView\n    items: sampleMenuParsed,\n    handlers:\n      alert: ->\n        Modal.alert \"yolo\"\n      prompt: ->\n        Modal.prompt \"Pretty cool, eh?\", \"Yeah!\"\n        .then console.log\n      confirm: ->\n        Modal.confirm \"Jawsome!\"\n        .then console.log\n      progress: ->\n        progressView = ProgressView\n          value: 0.5\n\n        Modal.show progressView.element\n\n  document.body.appendChild element\n\n  contextMenu = ContextMenuView\n    items: sampleMenuParsed[1][1]\n    handlers: {}\n\n  document.addEventListener \"contextmenu\", (e) ->\n    if e.target is document.body\n      e.preventDefault()\n  \n      contextMenu.display\n        inElement: document.body\n        x: e.pageX\n        y: e.pageY\n\nmodule.exports = {\n  Modal\n  MenuItemView\n  Style:\n    modal: require \"./style/modal\"\n}\n",
+      "content": "Action = require \"./action\"\nModal = require \"./modal\"\nMenuBarView = require \"./views/menu-bar\"\nMenuItemView = require \"./views/menu-item\"\nMenuView = require \"./views/menu\"\nProgressView = require \"./views/progress\"\nObservable = require \"observable\"\nContextMenuView = require \"./views/context-menu\"\n\nglobal.assert = require \"./lib/assert\"\n\nif PACKAGE.name is \"ROOT\"\n  style = document.createElement \"style\"\n  style.innerHTML = [\n    require \"./style/main\"\n    require \"./style/modal\"\n  ].join(\"\\n\")\n  document.head.appendChild style\n\n  sampleMenuParsed = require \"../samples/demo\"\n  {element} = MenuBarView\n    items: sampleMenuParsed,\n    handlers:\n      alert: ->\n        Modal.alert \"yolo\"\n      prompt: ->\n        Modal.prompt \"Pretty cool, eh?\", \"Yeah!\"\n        .then console.log\n      confirm: ->\n        Modal.confirm \"Jawsome!\"\n        .then console.log\n      progress: ->\n        progressView = ProgressView\n          value: 0.5\n\n        Modal.show progressView.element\n\n  document.body.appendChild element\n\n  contextMenu = ContextMenuView\n    items: sampleMenuParsed[1][1]\n    handlers: {}\n\n  document.addEventListener \"contextmenu\", (e) ->\n    if e.target is document.body\n      e.preventDefault()\n\n      contextMenu.display\n        inElement: document.body\n        x: e.pageX\n        y: e.pageY\n  \n  require(\"./form\")()\n\nmodule.exports = {\n  Modal\n  MenuItemView\n  Style:\n    modal: require \"./style/modal\"\n}\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -63,6 +63,12 @@
     "pixie.cson": {
       "path": "pixie.cson",
       "content": "version: \"0.1.0\"\nentryPoint: \"main\"\nremoteDependencies: [\n]\ndependencies:\n  observable: \"distri/observable:master\"\n",
+      "mode": "100644",
+      "type": "blob"
+    },
+    "samples/demo.coffee": {
+      "path": "samples/demo.coffee",
+      "content": "parse = require \"../lib/indent-parse\"\n\nmodule.exports = parse \"\"\"\n  [M]odal\n    [A]lert\n    [C]onfirm\n    [P]rompt\n    P[r]ogress\n  [T]est\n    Test[1]\n      Hello\n      Wat\n    Test[2]\n      [N]ested\n      [R]ad\n        So Rad\n        Hella\n          Hecka\n            Super Hecka\n\"\"\"\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -99,6 +105,24 @@
     "templates/menu.jadelet": {
       "path": "templates/menu.jadelet",
       "content": "menu(@class @click @style)= @items\n",
+      "mode": "100644",
+      "type": "blob"
+    },
+    "templates/modal.jadelet": {
+      "path": "templates/modal.jadelet",
+      "content": "#modal\n",
+      "mode": "100644",
+      "type": "blob"
+    },
+    "templates/modal/prompt.jadelet": {
+      "path": "templates/modal/prompt.jadelet",
+      "content": "form(submit=@confirm tabindex=-1)\n  h1= @title\n  p= @message\n  - if @defaultValue?\n    input(type=\"text\" value=@defaultValue)\n  button OK\n  - if @cancel\n    button(click=@cancel) Cancel\n",
+      "mode": "100644",
+      "type": "blob"
+    },
+    "templates/progress.jadelet": {
+      "path": "templates/progress.jadelet",
+      "content": "loader\n  p= @message\n  progress(@class @value @max)\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -150,29 +174,20 @@
       "mode": "100644",
       "type": "blob"
     },
-    "templates/modal.jadelet": {
-      "path": "templates/modal.jadelet",
-      "content": "#modal\n",
-      "mode": "100644"
-    },
-    "templates/modal/prompt.jadelet": {
-      "path": "templates/modal/prompt.jadelet",
-      "content": "form(submit=@confirm tabindex=-1)\n  h1= @title\n  p= @message\n  - if @defaultValue?\n    input(type=\"text\" value=@defaultValue)\n  button OK\n  - if @cancel\n    button(click=@cancel) Cancel\n",
-      "mode": "100644"
-    },
-    "samples/demo.coffee": {
-      "path": "samples/demo.coffee",
-      "content": "parse = require \"../lib/indent-parse\"\n\nmodule.exports = parse \"\"\"\n  [M]odal\n    [A]lert\n    [C]onfirm\n    [P]rompt\n    P[r]ogress\n  [T]est\n    Test[1]\n      Hello\n      Wat\n    Test[2]\n      [N]ested\n      [R]ad\n        So Rad\n        Hella\n          Hecka\n            Super Hecka\n\"\"\"\n",
-      "mode": "100644"
-    },
     "views/progress.coffee": {
       "path": "views/progress.coffee",
       "content": "Template = require \"../templates/progress\"\n\nObservable = require \"observable\"\n\nmodule.exports = (params={}) ->\n  {value, max} = params\n  value = Observable value or 0\n  max = Observable max\n\n  element = Template\n    value: value\n    max: max\n\n  element: element\n  value: value\n  max: max\n",
+      "mode": "100644",
+      "type": "blob"
+    },
+    "form.coffee": {
+      "path": "form.coffee",
+      "content": "Modal = require \"./modal\"\n\nFormTemplate = require \"./samples/test-form\"\n\nmodule.exports = ->\n  form = FormTemplate\n    submit: (e) ->\n      formData = new FormData(e.target)\n\n      result = Array.from(formData.entries()).reduce (object, [key, value]) ->\n        # TODO: Nested objects\n        # TODO: Convert keys ending in [] to array entries\n        # *or* just keep it even simpler and don't allow multi-names at all\n        if object[key]?\n          unless object[key].push\n            object[key] = [object[key]]\n\n          object[key].push value\n        else\n          object[key] = value\n\n        object\n      , {}\n\n      console.log result\n\n      e.preventDefault()\n      Modal.hide()\n\n  Modal.show form\n",
       "mode": "100644"
     },
-    "templates/progress.jadelet": {
-      "path": "templates/progress.jadelet",
-      "content": "loader\n  p= @message\n  progress(@class @value @max)\n",
+    "samples/test-form.jadelet": {
+      "path": "samples/test-form.jadelet",
+      "content": "form(@submit)\n  input(name=\"yolo\")\n  input(name=\"x\" value=\"Lorem\")\n  input(name=\"y\" value=\"florem\")\n  input(name=\"z\" type=\"number\" value=5)\n  button Submit\n",
       "mode": "100644"
     }
   },
@@ -199,7 +214,7 @@
     },
     "main": {
       "path": "main",
-      "content": "(function() {\n  var Action, ContextMenuView, MenuBarView, MenuItemView, MenuView, Modal, Observable, ProgressView, contextMenu, element, sampleMenuParsed, style;\n\n  Action = require(\"./action\");\n\n  Modal = require(\"./modal\");\n\n  MenuBarView = require(\"./views/menu-bar\");\n\n  MenuItemView = require(\"./views/menu-item\");\n\n  MenuView = require(\"./views/menu\");\n\n  ProgressView = require(\"./views/progress\");\n\n  Observable = require(\"observable\");\n\n  ContextMenuView = require(\"./views/context-menu\");\n\n  global.assert = require(\"./lib/assert\");\n\n  if (PACKAGE.name === \"ROOT\") {\n    style = document.createElement(\"style\");\n    style.innerHTML = [require(\"./style/main\"), require(\"./style/modal\")].join(\"\\n\");\n    document.head.appendChild(style);\n    sampleMenuParsed = require(\"../samples/demo\");\n    element = MenuBarView({\n      items: sampleMenuParsed,\n      handlers: {\n        alert: function() {\n          return Modal.alert(\"yolo\");\n        },\n        prompt: function() {\n          return Modal.prompt(\"Pretty cool, eh?\", \"Yeah!\").then(console.log);\n        },\n        confirm: function() {\n          return Modal.confirm(\"Jawsome!\").then(console.log);\n        },\n        progress: function() {\n          var progressView;\n          progressView = ProgressView({\n            value: 0.5\n          });\n          return Modal.show(progressView.element);\n        }\n      }\n    }).element;\n    document.body.appendChild(element);\n    contextMenu = ContextMenuView({\n      items: sampleMenuParsed[1][1],\n      handlers: {}\n    });\n    document.addEventListener(\"contextmenu\", function(e) {\n      if (e.target === document.body) {\n        e.preventDefault();\n        return contextMenu.display({\n          inElement: document.body,\n          x: e.pageX,\n          y: e.pageY\n        });\n      }\n    });\n  }\n\n  module.exports = {\n    Modal: Modal,\n    MenuItemView: MenuItemView,\n    Style: {\n      modal: require(\"./style/modal\")\n    }\n  };\n\n}).call(this);\n",
+      "content": "(function() {\n  var Action, ContextMenuView, MenuBarView, MenuItemView, MenuView, Modal, Observable, ProgressView, contextMenu, element, sampleMenuParsed, style;\n\n  Action = require(\"./action\");\n\n  Modal = require(\"./modal\");\n\n  MenuBarView = require(\"./views/menu-bar\");\n\n  MenuItemView = require(\"./views/menu-item\");\n\n  MenuView = require(\"./views/menu\");\n\n  ProgressView = require(\"./views/progress\");\n\n  Observable = require(\"observable\");\n\n  ContextMenuView = require(\"./views/context-menu\");\n\n  global.assert = require(\"./lib/assert\");\n\n  if (PACKAGE.name === \"ROOT\") {\n    style = document.createElement(\"style\");\n    style.innerHTML = [require(\"./style/main\"), require(\"./style/modal\")].join(\"\\n\");\n    document.head.appendChild(style);\n    sampleMenuParsed = require(\"../samples/demo\");\n    element = MenuBarView({\n      items: sampleMenuParsed,\n      handlers: {\n        alert: function() {\n          return Modal.alert(\"yolo\");\n        },\n        prompt: function() {\n          return Modal.prompt(\"Pretty cool, eh?\", \"Yeah!\").then(console.log);\n        },\n        confirm: function() {\n          return Modal.confirm(\"Jawsome!\").then(console.log);\n        },\n        progress: function() {\n          var progressView;\n          progressView = ProgressView({\n            value: 0.5\n          });\n          return Modal.show(progressView.element);\n        }\n      }\n    }).element;\n    document.body.appendChild(element);\n    contextMenu = ContextMenuView({\n      items: sampleMenuParsed[1][1],\n      handlers: {}\n    });\n    document.addEventListener(\"contextmenu\", function(e) {\n      if (e.target === document.body) {\n        e.preventDefault();\n        return contextMenu.display({\n          inElement: document.body,\n          x: e.pageX,\n          y: e.pageY\n        });\n      }\n    });\n    require(\"./form\")();\n  }\n\n  module.exports = {\n    Modal: Modal,\n    MenuItemView: MenuItemView,\n    Style: {\n      modal: require(\"./style/modal\")\n    }\n  };\n\n}).call(this);\n",
       "type": "blob"
     },
     "modal": {
@@ -210,6 +225,11 @@
     "pixie": {
       "path": "pixie",
       "content": "module.exports = {\"version\":\"0.1.0\",\"entryPoint\":\"main\",\"remoteDependencies\":[],\"dependencies\":{\"observable\":\"distri/observable:master\"}};",
+      "type": "blob"
+    },
+    "samples/demo": {
+      "path": "samples/demo",
+      "content": "(function() {\n  var parse;\n\n  parse = require(\"../lib/indent-parse\");\n\n  module.exports = parse(\"[M]odal\\n  [A]lert\\n  [C]onfirm\\n  [P]rompt\\n  P[r]ogress\\n[T]est\\n  Test[1]\\n    Hello\\n    Wat\\n  Test[2]\\n    [N]ested\\n    [R]ad\\n      So Rad\\n      Hella\\n        Hecka\\n          Super Hecka\");\n\n}).call(this);\n",
       "type": "blob"
     },
     "samples/notepad-menu": {
@@ -240,6 +260,21 @@
     "templates/menu": {
       "path": "templates/menu",
       "content": "module.exports = function(data) {\n  \"use strict\";\n  return (function() {\n    var __root;\n    __root = require(\"/lib/hamlet-runtime\")(this);\n    __root.buffer(__root.element(\"menu\", this, {\n      \"class\": [this[\"class\"]],\n      \"click\": this.click,\n      \"style\": this.style\n    }, function(__root) {\n      __root.buffer(this.items);\n    }));\n    return __root.root;\n  }).call(data);\n};\n",
+      "type": "blob"
+    },
+    "templates/modal": {
+      "path": "templates/modal",
+      "content": "module.exports = function(data) {\n  \"use strict\";\n  return (function() {\n    var __root;\n    __root = require(\"/lib/hamlet-runtime\")(this);\n    __root.buffer(__root.element(\"div\", this, {\n      id: [\"modal\"]\n    }, function(__root) {}));\n    return __root.root;\n  }).call(data);\n};\n",
+      "type": "blob"
+    },
+    "templates/modal/prompt": {
+      "path": "templates/modal/prompt",
+      "content": "module.exports = function(data) {\n  \"use strict\";\n  return (function() {\n    var __root;\n    __root = require(\"/lib/hamlet-runtime\")(this);\n    __root.buffer(__root.element(\"form\", this, {\n      \"submit\": this.confirm,\n      \"tabindex\": -1\n    }, function(__root) {\n      __root.buffer(__root.element(\"h1\", this, {}, function(__root) {\n        __root.buffer(this.title);\n      }));\n      __root.buffer(__root.element(\"p\", this, {}, function(__root) {\n        __root.buffer(this.message);\n      }));\n      if (this.defaultValue != null) {\n        __root.buffer(__root.element(\"input\", this, {\n          \"type\": \"text\",\n          \"value\": this.defaultValue\n        }, function(__root) {}));\n      }\n      __root.buffer(__root.element(\"button\", this, {}, function(__root) {\n        __root.buffer(\"OK\\n\");\n      }));\n      if (this.cancel) {\n        __root.buffer(__root.element(\"button\", this, {\n          \"click\": this.cancel\n        }, function(__root) {\n          __root.buffer(\"Cancel\\n\");\n        }));\n      }\n    }));\n    return __root.root;\n  }).call(data);\n};\n",
+      "type": "blob"
+    },
+    "templates/progress": {
+      "path": "templates/progress",
+      "content": "module.exports = function(data) {\n  \"use strict\";\n  return (function() {\n    var __root;\n    __root = require(\"/lib/hamlet-runtime\")(this);\n    __root.buffer(__root.element(\"loader\", this, {}, function(__root) {\n      __root.buffer(__root.element(\"p\", this, {}, function(__root) {\n        __root.buffer(this.message);\n      }));\n      __root.buffer(__root.element(\"progress\", this, {\n        \"class\": [this[\"class\"]],\n        \"value\": this.value,\n        \"max\": this.max\n      }, function(__root) {}));\n    }));\n    return __root.root;\n  }).call(data);\n};\n",
       "type": "blob"
     },
     "test/menu": {
@@ -282,29 +317,19 @@
       "content": "(function() {\n  var F, MenuItemTemplate, MenuItemView, MenuTemplate, MenuView, Observable, S, SeparatorView, accelerateItem, advance, asElement, handle, htmlEscape, isDescendant, _ref;\n\n  Observable = require(\"observable\");\n\n  _ref = require(\"../util\"), advance = _ref.advance, accelerateItem = _ref.accelerateItem, asElement = _ref.asElement, F = _ref.F, S = _ref.S, htmlEscape = _ref.htmlEscape, handle = _ref.handle, isDescendant = _ref.isDescendant;\n\n  MenuTemplate = require(\"../templates/menu\");\n\n  MenuItemTemplate = require(\"../templates/menu-item\");\n\n  SeparatorView = require(\"./menu-separator\");\n\n  MenuItemView = require(\"./menu-item\");\n\n  module.exports = MenuView = function(_arg) {\n    var active, activeItem, classes, contextRoot, items, navigableItems, parent, self, style;\n    items = _arg.items, classes = _arg.classes, style = _arg.style, contextRoot = _arg.contextRoot, parent = _arg.parent;\n    self = {};\n    if (classes == null) {\n      classes = function() {\n        return [\"options\"];\n      };\n    }\n    activeItem = contextRoot.activeItem;\n    items = items.map(function(item) {\n      var label, submenuItems;\n      switch (false) {\n        case item !== \"-\":\n          return SeparatorView();\n        case !Array.isArray(item):\n          assert(item.length === 2);\n          label = item[0], submenuItems = item[1];\n          return MenuItemView({\n            label: label,\n            items: submenuItems,\n            MenuView: MenuView,\n            contextRoot: contextRoot,\n            parent: self\n          });\n        default:\n          return MenuItemView({\n            label: item,\n            contextRoot: contextRoot,\n            parent: self\n          });\n      }\n    });\n    navigableItems = items.filter(function(item) {\n      return !item.separator;\n    });\n    active = function() {\n      var _ref1;\n      return isDescendant((_ref1 = activeItem()) != null ? _ref1.element : void 0, self.element);\n    };\n    Object.assign(self, {\n      accelerate: function(key) {\n        return accelerateItem(items, key);\n      },\n      cursor: function(direction) {\n        var _ref1;\n        switch (direction) {\n          case \"Up\":\n            return self.advance(-1);\n          case \"Down\":\n            return self.advance(1);\n          default:\n            return (_ref1 = parent.parent) != null ? _ref1.cursor(direction) : void 0;\n        }\n      },\n      parent: parent,\n      items: items,\n      advance: function(n) {\n        return activeItem(advance(navigableItems, n));\n      },\n      navigableItems: navigableItems,\n      element: MenuTemplate({\n        style: style,\n        \"class\": function() {\n          return [active() ? \"active\" : void 0].concat(classes());\n        },\n        click: handle(function(e) {\n          return activeItem(self);\n        }),\n        items: items.map(asElement)\n      })\n    });\n    return self;\n  };\n\n}).call(this);\n",
       "type": "blob"
     },
-    "templates/modal": {
-      "path": "templates/modal",
-      "content": "module.exports = function(data) {\n  \"use strict\";\n  return (function() {\n    var __root;\n    __root = require(\"/lib/hamlet-runtime\")(this);\n    __root.buffer(__root.element(\"div\", this, {\n      id: [\"modal\"]\n    }, function(__root) {}));\n    return __root.root;\n  }).call(data);\n};\n",
-      "type": "blob"
-    },
-    "templates/modal/prompt": {
-      "path": "templates/modal/prompt",
-      "content": "module.exports = function(data) {\n  \"use strict\";\n  return (function() {\n    var __root;\n    __root = require(\"/lib/hamlet-runtime\")(this);\n    __root.buffer(__root.element(\"form\", this, {\n      \"submit\": this.confirm,\n      \"tabindex\": -1\n    }, function(__root) {\n      __root.buffer(__root.element(\"h1\", this, {}, function(__root) {\n        __root.buffer(this.title);\n      }));\n      __root.buffer(__root.element(\"p\", this, {}, function(__root) {\n        __root.buffer(this.message);\n      }));\n      if (this.defaultValue != null) {\n        __root.buffer(__root.element(\"input\", this, {\n          \"type\": \"text\",\n          \"value\": this.defaultValue\n        }, function(__root) {}));\n      }\n      __root.buffer(__root.element(\"button\", this, {}, function(__root) {\n        __root.buffer(\"OK\\n\");\n      }));\n      if (this.cancel) {\n        __root.buffer(__root.element(\"button\", this, {\n          \"click\": this.cancel\n        }, function(__root) {\n          __root.buffer(\"Cancel\\n\");\n        }));\n      }\n    }));\n    return __root.root;\n  }).call(data);\n};\n",
-      "type": "blob"
-    },
-    "samples/demo": {
-      "path": "samples/demo",
-      "content": "(function() {\n  var parse;\n\n  parse = require(\"../lib/indent-parse\");\n\n  module.exports = parse(\"[M]odal\\n  [A]lert\\n  [C]onfirm\\n  [P]rompt\\n  P[r]ogress\\n[T]est\\n  Test[1]\\n    Hello\\n    Wat\\n  Test[2]\\n    [N]ested\\n    [R]ad\\n      So Rad\\n      Hella\\n        Hecka\\n          Super Hecka\");\n\n}).call(this);\n",
-      "type": "blob"
-    },
     "views/progress": {
       "path": "views/progress",
       "content": "(function() {\n  var Observable, Template;\n\n  Template = require(\"../templates/progress\");\n\n  Observable = require(\"observable\");\n\n  module.exports = function(params) {\n    var element, max, value;\n    if (params == null) {\n      params = {};\n    }\n    value = params.value, max = params.max;\n    value = Observable(value || 0);\n    max = Observable(max);\n    element = Template({\n      value: value,\n      max: max\n    });\n    return {\n      element: element,\n      value: value,\n      max: max\n    };\n  };\n\n}).call(this);\n",
       "type": "blob"
     },
-    "templates/progress": {
-      "path": "templates/progress",
-      "content": "module.exports = function(data) {\n  \"use strict\";\n  return (function() {\n    var __root;\n    __root = require(\"/lib/hamlet-runtime\")(this);\n    __root.buffer(__root.element(\"loader\", this, {}, function(__root) {\n      __root.buffer(__root.element(\"p\", this, {}, function(__root) {\n        __root.buffer(this.message);\n      }));\n      __root.buffer(__root.element(\"progress\", this, {\n        \"class\": [this[\"class\"]],\n        \"value\": this.value,\n        \"max\": this.max\n      }, function(__root) {}));\n    }));\n    return __root.root;\n  }).call(data);\n};\n",
+    "form": {
+      "path": "form",
+      "content": "(function() {\n  var FormTemplate, Modal;\n\n  Modal = require(\"./modal\");\n\n  FormTemplate = require(\"./samples/test-form\");\n\n  module.exports = function() {\n    var form;\n    form = FormTemplate({\n      submit: function(e) {\n        var formData, result;\n        formData = new FormData(e.target);\n        result = Array.from(formData.entries()).reduce(function(object, _arg) {\n          var key, value;\n          key = _arg[0], value = _arg[1];\n          if (object[key] != null) {\n            if (!object[key].push) {\n              object[key] = [object[key]];\n            }\n            object[key].push(value);\n          } else {\n            object[key] = value;\n          }\n          return object;\n        }, {});\n        console.log(result);\n        e.preventDefault();\n        return Modal.hide();\n      }\n    });\n    return Modal.show(form);\n  };\n\n}).call(this);\n",
+      "type": "blob"
+    },
+    "samples/test-form": {
+      "path": "samples/test-form",
+      "content": "module.exports = function(data) {\n  \"use strict\";\n  return (function() {\n    var __root;\n    __root = require(\"/lib/hamlet-runtime\")(this);\n    __root.buffer(__root.element(\"form\", this, {\n      \"submit\": this.submit\n    }, function(__root) {\n      __root.buffer(__root.element(\"input\", this, {\n        \"name\": \"yolo\"\n      }, function(__root) {}));\n      __root.buffer(__root.element(\"input\", this, {\n        \"name\": \"x\",\n        \"value\": \"Lorem\"\n      }, function(__root) {}));\n      __root.buffer(__root.element(\"input\", this, {\n        \"name\": \"y\",\n        \"value\": \"florem\"\n      }, function(__root) {}));\n      __root.buffer(__root.element(\"input\", this, {\n        \"name\": \"z\",\n        \"type\": \"number\",\n        \"value\": 5\n      }, function(__root) {}));\n      __root.buffer(__root.element(\"button\", this, {}, function(__root) {\n        __root.buffer(\"Submit\\n\");\n      }));\n    }));\n    return __root.root;\n  }).call(data);\n};\n",
       "type": "blob"
     },
     "lib/hamlet-runtime": {
