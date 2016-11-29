@@ -27,7 +27,8 @@ Loader / Progress
 Documentation
   Modals
   Menus
-  Context Meuns
+  Context Menus
+  Hotkeys
 
 Examples
   Modal Progress Bar

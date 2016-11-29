@@ -1,0 +1,6 @@
+form(@submit)
+  input(name="yolo")
+  input(name="x" value="Lorem")
+  input(name="y" value="florem")
+  input(name="z" type="number" value=5)
+  button Submit

@@ -44,11 +44,13 @@ if PACKAGE.name is "ROOT"
   document.addEventListener "contextmenu", (e) ->
     if e.target is document.body
       e.preventDefault()
-  
+
       contextMenu.display
         inElement: document.body
         x: e.pageX
         y: e.pageY
+  
+  require("./form")()
 
 module.exports = {
   Modal
