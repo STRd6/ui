@@ -44,6 +44,7 @@ prompt = (params) ->
     element = PromptTemplate params
 
     Modal.show element, resolve
+    element.querySelector(params.focus)?.focus()
 
 module.exports = Modal =
   show: (element, _closeHandler) ->
@@ -60,6 +61,7 @@ module.exports = Modal =
     prompt
       title: "Alert"
       message: message
+      focus: "button"
       confirm: handle ->
         Modal.hide()
 
@@ -67,6 +69,7 @@ module.exports = Modal =
     prompt
       title: "Prompt"
       message: message
+      focus: "input"
       defaultValue: defaultValue
       cancel: handle ->
         Modal.hide(null)
@@ -77,6 +80,7 @@ module.exports = Modal =
     prompt
       title: "Confirm"
       message: message
+      focus: "button"
       cancel: handle ->
         Modal.hide(false)
       confirm: handle ->
