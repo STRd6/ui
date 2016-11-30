@@ -1,5 +1,7 @@
 Observable = require "observable"
 
+assert = require "../lib/assert"
+
 {advance, accelerateItem, asElement, F, S, htmlEscape, handle, isDescendant} = require "../util"
 
 MenuTemplate = require "../templates/menu"

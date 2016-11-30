@@ -51,6 +51,16 @@ advance = (list, amount) ->
 
   list[activeItemIndex]
 
+# TODO: Nested objects?
+# TODO: Convert keys ending in [] to array entries?
+# Just keeping it simple and crushing duplicate names
+formDataToObject = (formData) ->
+  Array.from(formData.entries()).reduce (object, [key, value]) ->
+    object[key] = value
+
+    object
+  , {}
+
 module.exports =
   htmlEscape: (string) ->
     String(string).replace /[&<>"'\/]/g, (s) ->
@@ -63,6 +73,7 @@ module.exports =
   advance: advance
   asElement: asElement
   accelerateItem: accelerateItem
+  formDataToObject: formDataToObject
   handle: handle
   isDescendant: isDescendant
 

@@ -10,7 +10,7 @@ body
 
 body, html
   height: 100%
-  
+
 // Loader
 loader
   display: block
@@ -21,104 +21,3 @@ loader
 
   > progress
     display: block
-
-// Menus
-no-select()
-  user-select: none
-  -moz-user-select: none
-  -webkit-user-select: none
-  -ms-user-select: none
-
-menu
-  no-select()
-
-  background-color: lightgrey
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5)
-  margin: 0
-
-menu.context
-  z-index: 2000
-
-menu-item
-  display: block
-  list-style-type: none
-
-  &.active
-    background-color: blue
-    color: white
-
-  > label
-    display: flex
-    padding: 0 0.25em
-    white-space: nowrap
-
-    > *
-      flex: 1 1 auto
-
-    > span.hotkey
-      margin-left: 1em
-
-      &:empty
-        margin-left: 0
-
-    > .decoration
-      flex: 0 1 auto
-      line-height: 1em
-      text-align: right
-      margin-left: 0.5em
-
-      &:empty
-        margin-left: 0
-
-  &[disabled]
-    color: gray
-
-    &.active
-      background-color: rgba(0, 0, 0, 0.125)
-
-menu.options
-  border-top: 1px solid rgba(255, 255, 255, 0.5)
-  border-left: 1px solid rgba(255, 255, 255, 0.5)
-  border-right: 1px solid rgba(0, 0, 0, 0.5)
-
-  box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5)
-
-  display: none
-
-  padding: 2px
-  padding-bottom: 3px
-  position: absolute
-
-  &.active
-    display: block
-
-  // Submenu
-  > menu-item.menu
-    position: relative
-
-    > menu
-      position: absolute
-      left: 100%
-      top: -3px
-      margin-left: 1px
-
-menu-item.menu.active
-  > menu
-    background-color: lightgrey
-    color: black
-    display: block
-
-menu.bar
-  display: block
-  margin: 0
-  padding: 0
-  position: initial
-
-  > menu-item
-    display: inline-block
-    > label > .decoration
-      display: none
-
-  &.accelerator-active
-    span.accelerator
-      text-decoration: underline

@@ -18,7 +18,7 @@ You can display any element in the modal:
 
 ###
 
-{handle} = require "./util"
+{formDataToObject, handle} = require "./util"
 
 PromptTemplate = require "./templates/modal/prompt"
 ModalTemplate = require "./templates/modal"
@@ -85,6 +85,19 @@ module.exports = Modal =
         Modal.hide(false)
       confirm: handle ->
         Modal.hide(true)
+
+  form: (formElement) ->
+    new Promise (resolve) ->
+      submitHandler = handle (e) ->
+        formData = new FormData(formElement)
+        result = formDataToObject(formData)
+        Modal.hide(result)
+
+      formElement.addEventListener "submit", submitHandler
+
+      Modal.show formElement, (result) ->
+        formElement.removeEventListener "submit", submitHandler
+        resolve(result)
 
 empty = (node) ->
   while node.hasChildNodes()

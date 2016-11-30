@@ -7,12 +7,11 @@ ProgressView = require "./views/progress"
 Observable = require "observable"
 ContextMenuView = require "./views/context-menu"
 
-global.assert = require "./lib/assert"
-
 if PACKAGE.name is "ROOT"
   style = document.createElement "style"
   style.innerHTML = [
     require "./style/main"
+    require "./style/menu"
     require "./style/modal"
   ].join("\n")
   document.head.appendChild style
