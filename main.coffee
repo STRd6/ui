@@ -7,6 +7,8 @@ ProgressView = require "./views/progress"
 Observable = require "observable"
 ContextMenuView = require "./views/context-menu"
 
+FormSampleTemplate = require "./samples/test-form"
+
 if PACKAGE.name is "ROOT"
   style = document.createElement "style"
   style.innerHTML = [
@@ -28,6 +30,9 @@ if PACKAGE.name is "ROOT"
       confirm: ->
         Modal.confirm "Jawsome!"
         .then console.log
+      form: ->
+        Modal.form FormSampleTemplate()
+        .then console.log
       progress: ->
         progressView = ProgressView
           value: 0.5
@@ -48,8 +53,6 @@ if PACKAGE.name is "ROOT"
         inElement: document.body
         x: e.pageX
         y: e.pageY
-  
-  require("./form")()
 
 module.exports = {
   Modal
