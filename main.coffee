@@ -11,11 +11,14 @@ FormSampleTemplate = require "./samples/test-form"
 
 if PACKAGE.name is "ROOT"
   style = document.createElement "style"
-  style.innerHTML = [
-    require "./style/main"
-    require "./style/menu"
-    require "./style/modal"
-  ].join("\n")
+  style.innerHTML = """
+    main
+    loader
+    menu
+    modal
+  """.split("\n").map (stylePath) ->
+    require "./style/#{stylePath}"
+  .join("\n")
   document.head.appendChild style
 
   sampleMenuParsed = require "../samples/demo"
@@ -37,7 +40,12 @@ if PACKAGE.name is "ROOT"
         progressView = ProgressView
           value: 0.5
 
-        Modal.show progressView.element
+        Modal.show progressView.element,
+          cancellable: false
+
+        setTimeout ->
+          Modal.hide()
+        , 1000
 
   document.body.appendChild element
 

@@ -1,4 +1,7 @@
 form
+  h1 Cool Form Bro
+  p
+    a(href="https://yolo.biz") Yolo
   input(name="yolo")
   input(name="x" value="Lorem")
   input(name="y" value="florem")

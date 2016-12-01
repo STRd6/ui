@@ -99,8 +99,9 @@ module.exports = ({items, handlers}) ->
       when "Escape"
         deactivate()
       else
-        # TODO: Only prevent default if we successfully accelerated?
-        e.preventDefault()
-        accelerateIfActive key.toLowerCase()
+        # Only prevent default if we successfully accelerated?
+        accelerated = accelerateIfActive(key.toLowerCase())
+        if accelerated?
+          e.preventDefault()
 
   return self

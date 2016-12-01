@@ -25,13 +25,14 @@ ModalTemplate = require "./templates/modal"
 
 modal = ModalTemplate()
 
+cancellable = true
 modal.onclick = (e) ->
-  if e.target is modal
+  if e.target is modal and cancellable
     Modal.hide()
 
 document.addEventListener "keydown", (e) ->
   unless e.defaultPrevented
-    if e.key is "Escape"
+    if e.key is "Escape" and cancellable
       e.preventDefault()
       Modal.hide()
 
@@ -47,14 +48,21 @@ prompt = (params) ->
     element.querySelector(params.focus)?.focus()
 
 module.exports = Modal =
-  show: (element, _closeHandler) ->
-    closeHandler = _closeHandler
+  show: (element, options) ->
+    if typeof options is "function"
+      closeHandler = options
+    else
+      closeHandler = options?.closeHandler
+      if options?.cancellable?
+        cancellable = options.cancellable
+
     empty(modal).appendChild(element)
     modal.classList.add "active"
 
   hide: (dataForHandler) ->
     closeHandler?(dataForHandler)
     modal.classList.remove "active"
+    cancellable = true
     empty(modal)
 
   alert: (message) ->
