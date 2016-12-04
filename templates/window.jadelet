@@ -1,4 +1,16 @@
 window
+  resize.n.h
+  resize.e.v
+  resize.s.h
+  resize.w.v
+  resize.n.e.h
+  resize.n.e.v
+  resize.n.w.h
+  resize.n.w.v
+  resize.s.e.h
+  resize.s.e.v
+  resize.s.w.h
+  resize.s.w.v
   header
     control
     title-bar= @title

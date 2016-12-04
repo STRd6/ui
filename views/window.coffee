@@ -32,6 +32,25 @@ document.addEventListener "mouseup", ->
   activeDrag = null
 
 # TODO: Resize Handling
+activeResize = null
+resizeStart = null
+document.addEventListener "mousedown", (e) ->
+  {target} = e
+
+  if target.tagName is "RESIZE"
+    resizeStart = e
+    activeResize = elementView target
+
+document.addEventListener "mousemove", (e) ->
+  if activeResize
+    {clientX:prevX, clientY:prevY} = resizeStart
+    {clientX:x, clientY:y} = e
+
+    dx = x - prevX
+    dy = y - prevY
+
+document.addEventListener "mouseup", ->
+  activeResize = null
 
 Observable = require "observable"
 

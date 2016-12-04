@@ -29,3 +29,58 @@ window
     background-color: white
     min-height: 20px
     min-width: 20px
+
+  > resize
+    display: block
+    position: absolute
+
+    &.e, &.w
+      cursor: ew-resize
+
+    &.n, &.s
+      cursor: ns-resize
+
+    &.h
+      height: 4px
+      width: 100%
+
+    &.v
+      height: 100%
+      width: 4px
+
+    &.w
+      left: -4px
+    &.e
+      right: -4px
+    &.n
+      top: -4px
+    &.s
+      bottom: -4px
+
+    &.n.w
+      cursor: nw-resize
+
+    &.n.e
+      cursor: ne-resize
+
+    &.s.e
+      cursor: se-resize
+
+    &.s.w
+      cursor: sw-resize
+
+    &.n.v
+      height: 24px
+      border-bottom: 1px solid black
+
+    &.s.v
+      height: 24px
+      border-top: 1px solid black
+
+    &.e.h
+      border-left: 1px solid black
+      width: 24px
+
+    &.w.h
+      border-right: 1px solid black
+      width: 24px
