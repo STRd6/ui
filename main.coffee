@@ -6,6 +6,7 @@ MenuView = require "./views/menu"
 ProgressView = require "./views/progress"
 Observable = require "observable"
 ContextMenuView = require "./views/context-menu"
+WindowView = require "./views/window"
 
 FormSampleTemplate = require "./samples/test-form"
 
@@ -16,6 +17,7 @@ if PACKAGE.name is "ROOT"
     loader
     menu
     modal
+    window
   """.split("\n").map (stylePath) ->
     require "./style/#{stylePath}"
   .join("\n")
@@ -50,6 +52,10 @@ if PACKAGE.name is "ROOT"
             clearInterval intervalId
             Modal.hide()
         , 15
+      newWindow: ->
+        windowView = WindowView
+          yolo: {}
+        document.body.appendChild windowView.element
 
   document.body.appendChild element
 

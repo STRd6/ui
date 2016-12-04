@@ -7,7 +7,7 @@ module.exports = parse """
     [P]rompt
     [F]orm
     P[r]ogress
-  [T]est
+  [T]est Nesting
     Test[1]
       Hello
       Wat
@@ -18,4 +18,6 @@ module.exports = parse """
         Hella
           Hecka
             Super Hecka
+  [W]indow
+    [N]ew -> newWindow
 """

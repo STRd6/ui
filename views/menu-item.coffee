@@ -23,11 +23,10 @@ module.exports = ({label, MenuView, items, contextRoot, parent}) ->
     })
     content = submenu.element
 
-  [title, accelerator] = formatLabel label
-
   # Hook in to Action objects so we can display hotkeys
   # and enabled/disabled statuses.
-  actionName = formatAction label
+  [labelText, actionName] = formatAction label
+  [title, accelerator] = formatLabel labelText
   action = handlers[actionName]
   disabled = S(action, "disabled", false)
   hotkey = S(action, "hotkey", "")
@@ -116,7 +115,9 @@ formatAction = (labelText) ->
   action ?= title
 
   str = action.replace(/[^A-Za-z0-9]/g, "")
-  str.charAt(0).toLowerCase() + str.substring(1)
+  action = str.charAt(0).toLowerCase() + str.substring(1)
+
+  return [title, action]
 
 formatLabel = (labelText) ->
   accelerator = undefined
