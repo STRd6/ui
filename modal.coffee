@@ -44,7 +44,9 @@ prompt = (params) ->
   new Promise (resolve) ->
     element = PromptTemplate params
 
-    Modal.show element, resolve
+    Modal.show element,
+      cancellable: false
+      closeHandler: resolve
     element.querySelector(params.focus)?.focus()
 
 module.exports = Modal =

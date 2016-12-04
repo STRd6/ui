@@ -38,14 +38,18 @@ if PACKAGE.name is "ROOT"
         .then console.log
       progress: ->
         progressView = ProgressView
-          value: 0.5
+          value: 0
 
         Modal.show progressView.element,
           cancellable: false
 
-        setTimeout ->
-          Modal.hide()
-        , 1000
+        intervalId = setInterval ->
+          newValue = progressView.value() + 1/60
+          progressView.value(newValue)
+          if newValue > 1
+            clearInterval intervalId
+            Modal.hide()
+        , 15
 
   document.body.appendChild element
 
