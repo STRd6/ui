@@ -1,4 +1,7 @@
+notepadMenuParsed = require "../samples/demo"
 WindowTemplate = require "../templates/window"
+
+MenuBarView = require "./menu-bar"
 
 {elementView} = require "../util"
 
@@ -28,6 +31,8 @@ document.addEventListener "mousemove", (e) ->
 document.addEventListener "mouseup", ->
   activeDrag = null
 
+# TODO: Resize Handling
+
 Observable = require "observable"
 
 module.exports = () ->
@@ -36,6 +41,7 @@ module.exports = () ->
 
   element = WindowTemplate
     title: "Utitled"
+    menuBar: MenuBarView(items: notepadMenuParsed, handlers: {}).element
 
   styleBindPx(y, element, "top")
   styleBindPx(x, element, "left")

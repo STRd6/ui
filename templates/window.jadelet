@@ -1,4 +1,7 @@
 window
-  title-bar= @title
+  header
+    control
+    title-bar= @title
+    close
   = @menuBar
   content

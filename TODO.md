@@ -38,6 +38,7 @@ Windows
   Resizable
   Close
   Maximize
+  Z-Index
 
 TOMAYBE
 =======
