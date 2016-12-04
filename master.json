@@ -20,7 +20,7 @@
     },
     "TODO.md": {
       "path": "TODO.md",
-      "content": "TODO\n====\n\nModals\n  ✔️Alert\n  ✔️Prompt\n  ✔Confirm\n  ✔General\n\nMenus\n  ✔️Menu Bar\n  ✔️Context Menu\n  ✔️Keyboard Navigation (Up, Down, Left, Right)\n  ✔️Accelerator Keys\n  ✔️Display Hotkeys\n  ✔️Indicate Enabled/Disabled\n  ✔️Nested Submenus\n\nToaster/Popup Notifications\n  Animations\n  Native notifications?\n\nGlobal Hotkeys\n\nLoader / Progress\n\nDocumentation\n  Modals\n  Menus\n  Context Menus\n  Hotkeys\n\nExamples\n  Modal Progress Bar\n\nWindows\n  Draggable\n  Resizable\n  Close\n  Maximize\n\nTOMAYBE\n=======\n\nTile Windows\n\nForms\n\nTables/Grids\n\nLists\n\nFile Trees\n",
+      "content": "TODO\n====\n\nModals\n  ✔️Alert\n  ✔️Prompt\n  ✔Confirm\n  ✔General\n\nMenus\n  ✔️Menu Bar\n  ✔️Context Menu\n  ✔️Keyboard Navigation (Up, Down, Left, Right)\n  ✔️Accelerator Keys\n  ✔️Display Hotkeys\n  ✔️Indicate Enabled/Disabled\n  ✔️Nested Submenus\n\nToaster/Popup Notifications\n  Animations\n  Native notifications?\n\nGlobal Hotkeys\n\nLoader / Progress\n\nDocumentation\n  Modals\n  Menus\n  Context Menus\n  Hotkeys\n\nExamples\n  Modal Progress Bar\n\nWindows\n  Draggable\n  Resizable\n  Close\n  Maximize\n  Z-Index\n\nTOMAYBE\n=======\n\nTile Windows\n\nForms\n\nTables/Grids\n\nLists\n\nFile Trees\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -108,6 +108,12 @@
       "mode": "100644",
       "type": "blob"
     },
+    "style/window.styl": {
+      "path": "style/window.styl",
+      "content": "window\n  background-color: lightgrey\n  border: 4px double black\n  display: flex\n  flex-direction: column\n  position: absolute\n\n  > header\n    border-bottom: 1px solid black\n    display: flex\n\n    > close, > control\n      display: inline-block\n      flex: 0 0 auto\n      width: 18px\n\n    > title-bar\n      background-color: #000080\n      border-color: black\n      border-style: solid\n      border-width: 0 1px\n      color: white\n      display: inline-block\n      flex: 1 1 auto\n      padding: 2px\n      text-align: center\n\n  > content\n    background-color: white\n    min-height: 20px\n    min-width: 20px\n",
+      "mode": "100644",
+      "type": "blob"
+    },
     "templates/menu-item.jadelet": {
       "path": "templates/menu-item.jadelet",
       "content": "menu-item(@class @click @mousemove @disabled)\n  label\n    = @title\n    span.hotkey= @hotkey\n    span.decoration= @decoration\n  = @content\n",
@@ -141,6 +147,12 @@
     "templates/progress.jadelet": {
       "path": "templates/progress.jadelet",
       "content": "loader\n  p= @message\n  progress(@class @value @max)\n",
+      "mode": "100644",
+      "type": "blob"
+    },
+    "templates/window.jadelet": {
+      "path": "templates/window.jadelet",
+      "content": "window\n  header\n    control\n    title-bar= @title\n    close\n  = @menuBar\n  content\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -200,18 +212,9 @@
     },
     "views/window.coffee": {
       "path": "views/window.coffee",
-      "content": "WindowTemplate = require \"../templates/window\"\n\n{elementView} = require \"../util\"\n\n# Drag Handling\nactiveDrag = null\ndragStart = null\ndocument.addEventListener \"mousedown\", (e) ->\n  {target} = e\n\n  if target.tagName is \"TITLE-BAR\"\n    dragStart = e\n    activeDrag = elementView target\n\ndocument.addEventListener \"mousemove\", (e) ->\n  if activeDrag\n    {clientX:prevX, clientY:prevY} = dragStart\n    {clientX:x, clientY:y} = e\n\n    dx = x - prevX\n    dy = y - prevY\n\n    activeDrag.x activeDrag.x() + dx\n    activeDrag.y activeDrag.y() + dy\n\n    dragStart = e\n\ndocument.addEventListener \"mouseup\", ->\n  activeDrag = null\n\nObservable = require \"observable\"\n\nmodule.exports = () ->\n  x = Observable 50\n  y = Observable 50\n\n  element = WindowTemplate\n    title: \"Utitled\"\n\n  styleBindPx(y, element, \"top\")\n  styleBindPx(x, element, \"left\")\n\n  self =\n    element: element\n    x: x\n    y: y\n\n  element.view = self\n\n  return self\n\nstyleBindPx = (observable, element, attr) ->\n  update = (newValue) ->\n    newValue = parseInt newValue\n\n    if newValue?\n      element.style[attr] = \"#{newValue}px\"\n\n  observable.observe update\n\n  update(observable())\n",
-      "mode": "100644"
-    },
-    "templates/window.jadelet": {
-      "path": "templates/window.jadelet",
-      "content": "window\n  title-bar= @title\n  = @menuBar\n  content\n",
-      "mode": "100644"
-    },
-    "style/window.styl": {
-      "path": "style/window.styl",
-      "content": "window\n  background-color: lightgrey\n  border: 1px solid black\n  display: flex\n  flex-direction: column\n  padding: 2px\n  position: absolute\n\n  > title-bar\n    background-color: blue\n    color: white\n    display: flex\n\n  > content\n    min-height: 20px\n    min-width: 20px\n",
-      "mode": "100644"
+      "content": "notepadMenuParsed = require \"../samples/demo\"\nWindowTemplate = require \"../templates/window\"\n\nMenuBarView = require \"./menu-bar\"\n\n{elementView} = require \"../util\"\n\n# Drag Handling\nactiveDrag = null\ndragStart = null\ndocument.addEventListener \"mousedown\", (e) ->\n  {target} = e\n\n  if target.tagName is \"TITLE-BAR\"\n    dragStart = e\n    activeDrag = elementView target\n\ndocument.addEventListener \"mousemove\", (e) ->\n  if activeDrag\n    {clientX:prevX, clientY:prevY} = dragStart\n    {clientX:x, clientY:y} = e\n\n    dx = x - prevX\n    dy = y - prevY\n\n    activeDrag.x activeDrag.x() + dx\n    activeDrag.y activeDrag.y() + dy\n\n    dragStart = e\n\ndocument.addEventListener \"mouseup\", ->\n  activeDrag = null\n\n# TODO: Resize Handling\n\nObservable = require \"observable\"\n\nmodule.exports = () ->\n  x = Observable 50\n  y = Observable 50\n\n  element = WindowTemplate\n    title: \"Utitled\"\n    menuBar: MenuBarView(items: notepadMenuParsed, handlers: {}).element\n\n  styleBindPx(y, element, \"top\")\n  styleBindPx(x, element, \"left\")\n\n  self =\n    element: element\n    x: x\n    y: y\n\n  element.view = self\n\n  return self\n\nstyleBindPx = (observable, element, attr) ->\n  update = (newValue) ->\n    newValue = parseInt newValue\n\n    if newValue?\n      element.style[attr] = \"#{newValue}px\"\n\n  observable.observe update\n\n  update(observable())\n",
+      "mode": "100644",
+      "type": "blob"
     }
   },
   "distribution": {
@@ -285,6 +288,11 @@
       "content": "module.exports = \"#modal {\\n  align-items: center;\\n  background-color: rgba(0,0,0,0.25);\\n  display: none;\\n  justify-content: center;\\n  position: absolute;\\n  z-index: 1000;\\n  top: 0;\\n  width: 100%;\\n  height: 100%;\\n}\\n#modal.active {\\n  display: flex;\\n}\\n#modal > * {\\n  background-color: #fff;\\n  border: 1px solid rgba(0,0,0,0.5);\\n  box-shadow: 2px 2px 6px #000;\\n  max-width: 90%;\\n  max-height: 90%;\\n}\\n#modal > form {\\n  display: block;\\n  padding: 1em;\\n}\\n#modal > form > h1 {\\n  font-size: 1.5em;\\n  margin: 0;\\n}\\n#modal > form > input,\\n#modal > form textarea {\\n  display: block;\\n  margin-bottom: 1em;\\n  width: 100%;\\n}\\n#modal > form > button {\\n  margin-right: 1em;\\n}\\n#modal > form > button:last-child {\\n  margin-right: 0;\\n}\\n\";",
       "type": "blob"
     },
+    "style/window": {
+      "path": "style/window",
+      "content": "module.exports = \"window {\\n  background-color: #d3d3d3;\\n  border: 4px double #000;\\n  display: flex;\\n  flex-direction: column;\\n  position: absolute;\\n}\\nwindow > header {\\n  border-bottom: 1px solid #000;\\n  display: flex;\\n}\\nwindow > header > close,\\nwindow > header > control {\\n  display: inline-block;\\n  flex: 0 0 auto;\\n  width: 18px;\\n}\\nwindow > header > title-bar {\\n  background-color: #000080;\\n  border-color: #000;\\n  border-style: solid;\\n  border-width: 0 1px;\\n  color: #fff;\\n  display: inline-block;\\n  flex: 1 1 auto;\\n  padding: 2px;\\n  text-align: center;\\n}\\nwindow > content {\\n  background-color: #fff;\\n  min-height: 20px;\\n  min-width: 20px;\\n}\\n\";",
+      "type": "blob"
+    },
     "templates/menu-item": {
       "path": "templates/menu-item",
       "content": "module.exports = function(data) {\n  \"use strict\";\n  return (function() {\n    var __root;\n    __root = require(\"/lib/hamlet-runtime\")(this);\n    __root.buffer(__root.element(\"menu-item\", this, {\n      \"class\": [this[\"class\"]],\n      \"click\": this.click,\n      \"mousemove\": this.mousemove,\n      \"disabled\": this.disabled\n    }, function(__root) {\n      __root.buffer(__root.element(\"label\", this, {}, function(__root) {\n        __root.buffer(this.title);\n        __root.buffer(__root.element(\"span\", this, {\n          \"class\": [\"hotkey\"]\n        }, function(__root) {\n          __root.buffer(this.hotkey);\n        }));\n        __root.buffer(__root.element(\"span\", this, {\n          \"class\": [\"decoration\"]\n        }, function(__root) {\n          __root.buffer(this.decoration);\n        }));\n      }));\n      __root.buffer(this.content);\n    }));\n    return __root.root;\n  }).call(data);\n};\n",
@@ -313,6 +321,11 @@
     "templates/progress": {
       "path": "templates/progress",
       "content": "module.exports = function(data) {\n  \"use strict\";\n  return (function() {\n    var __root;\n    __root = require(\"/lib/hamlet-runtime\")(this);\n    __root.buffer(__root.element(\"loader\", this, {}, function(__root) {\n      __root.buffer(__root.element(\"p\", this, {}, function(__root) {\n        __root.buffer(this.message);\n      }));\n      __root.buffer(__root.element(\"progress\", this, {\n        \"class\": [this[\"class\"]],\n        \"value\": this.value,\n        \"max\": this.max\n      }, function(__root) {}));\n    }));\n    return __root.root;\n  }).call(data);\n};\n",
+      "type": "blob"
+    },
+    "templates/window": {
+      "path": "templates/window",
+      "content": "module.exports = function(data) {\n  \"use strict\";\n  return (function() {\n    var __root;\n    __root = require(\"/lib/hamlet-runtime\")(this);\n    __root.buffer(__root.element(\"window\", this, {}, function(__root) {\n      __root.buffer(__root.element(\"header\", this, {}, function(__root) {\n        __root.buffer(__root.element(\"control\", this, {}, function(__root) {}));\n        __root.buffer(__root.element(\"title-bar\", this, {}, function(__root) {\n          __root.buffer(this.title);\n        }));\n        __root.buffer(__root.element(\"close\", this, {}, function(__root) {}));\n      }));\n      __root.buffer(this.menuBar);\n      __root.buffer(__root.element(\"content\", this, {}, function(__root) {}));\n    }));\n    return __root.root;\n  }).call(data);\n};\n",
       "type": "blob"
     },
     "test/menu": {
@@ -362,17 +375,7 @@
     },
     "views/window": {
       "path": "views/window",
-      "content": "(function() {\n  var Observable, WindowTemplate, activeDrag, dragStart, elementView, styleBindPx;\n\n  WindowTemplate = require(\"../templates/window\");\n\n  elementView = require(\"../util\").elementView;\n\n  activeDrag = null;\n\n  dragStart = null;\n\n  document.addEventListener(\"mousedown\", function(e) {\n    var target;\n    target = e.target;\n    if (target.tagName === \"TITLE-BAR\") {\n      dragStart = e;\n      return activeDrag = elementView(target);\n    }\n  });\n\n  document.addEventListener(\"mousemove\", function(e) {\n    var dx, dy, prevX, prevY, x, y;\n    if (activeDrag) {\n      prevX = dragStart.clientX, prevY = dragStart.clientY;\n      x = e.clientX, y = e.clientY;\n      dx = x - prevX;\n      dy = y - prevY;\n      activeDrag.x(activeDrag.x() + dx);\n      activeDrag.y(activeDrag.y() + dy);\n      return dragStart = e;\n    }\n  });\n\n  document.addEventListener(\"mouseup\", function() {\n    return activeDrag = null;\n  });\n\n  Observable = require(\"observable\");\n\n  module.exports = function() {\n    var element, self, x, y;\n    x = Observable(50);\n    y = Observable(50);\n    element = WindowTemplate({\n      title: \"Utitled\"\n    });\n    styleBindPx(y, element, \"top\");\n    styleBindPx(x, element, \"left\");\n    self = {\n      element: element,\n      x: x,\n      y: y\n    };\n    element.view = self;\n    return self;\n  };\n\n  styleBindPx = function(observable, element, attr) {\n    var update;\n    update = function(newValue) {\n      newValue = parseInt(newValue);\n      if (newValue != null) {\n        return element.style[attr] = \"\" + newValue + \"px\";\n      }\n    };\n    observable.observe(update);\n    return update(observable());\n  };\n\n}).call(this);\n",
-      "type": "blob"
-    },
-    "templates/window": {
-      "path": "templates/window",
-      "content": "module.exports = function(data) {\n  \"use strict\";\n  return (function() {\n    var __root;\n    __root = require(\"/lib/hamlet-runtime\")(this);\n    __root.buffer(__root.element(\"window\", this, {}, function(__root) {\n      __root.buffer(__root.element(\"title-bar\", this, {}, function(__root) {\n        __root.buffer(this.title);\n      }));\n      __root.buffer(this.menuBar);\n      __root.buffer(__root.element(\"content\", this, {}, function(__root) {}));\n    }));\n    return __root.root;\n  }).call(data);\n};\n",
-      "type": "blob"
-    },
-    "style/window": {
-      "path": "style/window",
-      "content": "module.exports = \"window {\\n  background-color: #d3d3d3;\\n  border: 1px solid #000;\\n  display: flex;\\n  flex-direction: column;\\n  padding: 2px;\\n  position: absolute;\\n}\\nwindow > title-bar {\\n  background-color: #00f;\\n  color: #fff;\\n  display: flex;\\n}\\nwindow > content {\\n  min-height: 20px;\\n  min-width: 20px;\\n}\\n\";",
+      "content": "(function() {\n  var MenuBarView, Observable, WindowTemplate, activeDrag, dragStart, elementView, notepadMenuParsed, styleBindPx;\n\n  notepadMenuParsed = require(\"../samples/demo\");\n\n  WindowTemplate = require(\"../templates/window\");\n\n  MenuBarView = require(\"./menu-bar\");\n\n  elementView = require(\"../util\").elementView;\n\n  activeDrag = null;\n\n  dragStart = null;\n\n  document.addEventListener(\"mousedown\", function(e) {\n    var target;\n    target = e.target;\n    if (target.tagName === \"TITLE-BAR\") {\n      dragStart = e;\n      return activeDrag = elementView(target);\n    }\n  });\n\n  document.addEventListener(\"mousemove\", function(e) {\n    var dx, dy, prevX, prevY, x, y;\n    if (activeDrag) {\n      prevX = dragStart.clientX, prevY = dragStart.clientY;\n      x = e.clientX, y = e.clientY;\n      dx = x - prevX;\n      dy = y - prevY;\n      activeDrag.x(activeDrag.x() + dx);\n      activeDrag.y(activeDrag.y() + dy);\n      return dragStart = e;\n    }\n  });\n\n  document.addEventListener(\"mouseup\", function() {\n    return activeDrag = null;\n  });\n\n  Observable = require(\"observable\");\n\n  module.exports = function() {\n    var element, self, x, y;\n    x = Observable(50);\n    y = Observable(50);\n    element = WindowTemplate({\n      title: \"Utitled\",\n      menuBar: MenuBarView({\n        items: notepadMenuParsed,\n        handlers: {}\n      }).element\n    });\n    styleBindPx(y, element, \"top\");\n    styleBindPx(x, element, \"left\");\n    self = {\n      element: element,\n      x: x,\n      y: y\n    };\n    element.view = self;\n    return self;\n  };\n\n  styleBindPx = function(observable, element, attr) {\n    var update;\n    update = function(newValue) {\n      newValue = parseInt(newValue);\n      if (newValue != null) {\n        return element.style[attr] = \"\" + newValue + \"px\";\n      }\n    };\n    observable.observe(update);\n    return update(observable());\n  };\n\n}).call(this);\n",
       "type": "blob"
     },
     "lib/hamlet-runtime": {
