@@ -33,10 +33,16 @@ Documentation
 Examples
   Modal Progress Bar
 
+Windows
+  Draggable
+  Resizable
+  Close
+  Maximize
+
 TOMAYBE
 =======
 
-Draggable Windows
+Tile Windows
 
 Forms
 
