@@ -71,7 +71,7 @@ document.addEventListener "mousemove", (e) ->
     if activeResize.classList.contains("n")
       height -= dy
 
-    width = Math.max(width, 50)
+    width = Math.max(width, 200)
     height = Math.max(height, 50)
 
     actualDeltaX = width - resizeInitial.width
