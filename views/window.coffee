@@ -31,42 +31,61 @@ document.addEventListener "mousemove", (e) ->
 document.addEventListener "mouseup", ->
   activeDrag = null
 
-# TODO: Resize Handling
+# Resize Handling
 activeResize = null
 resizeStart = null
+resizeInitial = null
 document.addEventListener "mousedown", (e) ->
   {target} = e
 
   if target.tagName is "RESIZE"
     resizeStart = e
     activeResize = target
-    console.log target
+    {width, height, x, y} = elementView activeResize
+    resizeInitial =
+      width: width()
+      height: height()
+      x: x()
+      y: y()
 
 document.addEventListener "mousemove", (e) ->
   if activeResize
-    {clientX:prevX, clientY:prevY} = resizeStart
+    {clientX:startX, clientY:startY} = resizeStart
     {clientX:x, clientY:y} = e
 
-    dx = x - prevX
-    dy = y - prevY
+    dx = x - startX
+    dy = y - startY
 
-    view = elementView activeResize
+    width = resizeInitial.width
+    height = resizeInitial.height
 
     if activeResize.classList.contains("e")
-      view.width view.width() + dx
+      width += dx
 
     if activeResize.classList.contains("w")
-      view.x view.x() + dx
-      view.width view.width() - dx
+      width -= dx
 
     if activeResize.classList.contains("s")
-      view.height view.height() + dy
+      height += dy
 
     if activeResize.classList.contains("n")
-      view.y view.y() + dy
-      view.height view.height() - dy
+      height -= dy
 
-    resizeStart = e
+    width = Math.max(width, 50)
+    height = Math.max(height, 50)
+
+    actualDeltaX = width - resizeInitial.width
+    actualDeltaY = height - resizeInitial.height
+
+    view = elementView activeResize
+    if activeResize.classList.contains("n")
+      view.y resizeInitial.y- actualDeltaY
+
+    if activeResize.classList.contains("w")
+      view.x resizeInitial.x- actualDeltaX
+
+    view.width width
+    view.height height
 
 document.addEventListener "mouseup", ->
   activeResize = null
