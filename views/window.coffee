@@ -39,7 +39,8 @@ document.addEventListener "mousedown", (e) ->
 
   if target.tagName is "RESIZE"
     resizeStart = e
-    activeResize = elementView target
+    activeResize = target
+    console.log target
 
 document.addEventListener "mousemove", (e) ->
   if activeResize
@@ -49,6 +50,24 @@ document.addEventListener "mousemove", (e) ->
     dx = x - prevX
     dy = y - prevY
 
+    view = elementView activeResize
+
+    if activeResize.classList.contains("e")
+      view.width view.width() + dx
+
+    if activeResize.classList.contains("w")
+      view.x view.x() + dx
+      view.width view.width() - dx
+
+    if activeResize.classList.contains("s")
+      view.height view.height() + dy
+
+    if activeResize.classList.contains("n")
+      view.y view.y() + dy
+      view.height view.height() - dy
+
+    resizeStart = e
+
 document.addEventListener "mouseup", ->
   activeResize = null
 
@@ -57,6 +76,8 @@ Observable = require "observable"
 module.exports = () ->
   x = Observable 50
   y = Observable 50
+  width = Observable 400
+  height = Observable 300
 
   element = WindowTemplate
     title: "Utitled"
@@ -64,11 +85,15 @@ module.exports = () ->
 
   styleBindPx(y, element, "top")
   styleBindPx(x, element, "left")
+  styleBindPx(height, element, "height")
+  styleBindPx(width, element, "width")
 
   self =
     element: element
     x: x
     y: y
+    width: width
+    height: height
 
   element.view = self
 

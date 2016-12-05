@@ -1,4 +1,12 @@
+no-select()
+  user-select: none
+  -moz-user-select: none
+  -webkit-user-select: none
+  -ms-user-select: none
+
 window
+  no-select()
+
   background-color: lightgrey
   border: 4px double black
   display: flex
@@ -7,7 +15,9 @@ window
 
   > header
     border-bottom: 1px solid black
+    cursor: default
     display: flex
+    flex: 0 0 auto
 
     > close, > control
       display: inline-block
@@ -22,13 +32,12 @@ window
       color: white
       display: inline-block
       flex: 1 1 auto
-      padding: 2px
+      padding: 0 2px
       text-align: center
 
   > content
     background-color: white
-    min-height: 20px
-    min-width: 20px
+    height: 100%
 
   > resize
     display: block
@@ -70,17 +79,17 @@ window
       cursor: sw-resize
 
     &.n.v
-      height: 24px
+      height: 23px
       border-bottom: 1px solid black
 
     &.s.v
-      height: 24px
+      height: 23px
       border-top: 1px solid black
 
     &.e.h
       border-left: 1px solid black
-      width: 24px
+      width: 23px
 
     &.w.h
       border-right: 1px solid black
-      width: 24px
+      width: 23px
