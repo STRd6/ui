@@ -99,7 +99,7 @@ module.exports = () ->
   height = Observable 300
 
   element = WindowTemplate
-    title: "Utitled"
+    title: "Untitled"
     menuBar: MenuBarView(items: notepadMenuParsed, handlers: {}).element
 
   styleBindPx(y, element, "top")

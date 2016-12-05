@@ -18,6 +18,7 @@ module.exports = parse """
         Hella
           Hecka
             Super Hecka
+              Wicked
   [W]indow
     [N]ew -> newWindow
 """
