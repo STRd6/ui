@@ -101,6 +101,8 @@ module.exports = () ->
   element = WindowTemplate
     title: "Untitled"
     menuBar: MenuBarView(items: notepadMenuParsed, handlers: {}).element
+    close: ->
+      self.close()
 
   styleBindPx(y, element, "top")
   styleBindPx(x, element, "left")
@@ -113,6 +115,8 @@ module.exports = () ->
     y: y
     width: width
     height: height
+    close: ->
+      element.remove()
 
   element.view = self
 

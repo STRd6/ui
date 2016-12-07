@@ -73,6 +73,7 @@ if PACKAGE.name is "ROOT"
         y: e.pageY
 
 module.exports = {
+  ContextMenu: ContextMenuView
   Modal
   MenuItemView
   Style:

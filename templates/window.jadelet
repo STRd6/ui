@@ -12,8 +12,8 @@ window
   resize.s.w.h
   resize.s.w.v
   header
-    control
+    control -
     title-bar= @title
-    close
+    close(click=@close) X
   = @menuBar
   content
