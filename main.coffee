@@ -39,16 +39,24 @@ if PACKAGE.name is "ROOT"
         Modal.form FormSampleTemplate()
         .then console.log
       progress: ->
+        initialMessage = "Reticulating splines"
         progressView = ProgressView
           value: 0
+          max: 2
+          message: initialMessage
 
         Modal.show progressView.element,
           cancellable: false
 
         intervalId = setInterval ->
           newValue = progressView.value() + 1/60
+          ellipsesCount = Math.floor(newValue * 4) % 4
+          ellipses = [0...ellipsesCount].map ->
+            "."
+          .join("")
           progressView.value(newValue)
-          if newValue > 1
+          progressView.message(initialMessage + ellipses)
+          if newValue > 2
             clearInterval intervalId
             Modal.hide()
         , 15
@@ -78,4 +86,5 @@ module.exports = {
   MenuItemView
   Style:
     modal: require "./style/modal"
+  Window: WindowView
 }
