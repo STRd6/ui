@@ -1,7 +1,4 @@
-notepadMenuParsed = require "../samples/demo"
 WindowTemplate = require "../templates/window"
-
-MenuBarView = require "./menu-bar"
 
 {elementView} = require "../util"
 
@@ -92,15 +89,17 @@ document.addEventListener "mouseup", ->
 
 Observable = require "observable"
 
-module.exports = () ->
-  x = Observable 50
-  y = Observable 50
-  width = Observable 400
-  height = Observable 300
+module.exports = (params) ->
+  x = Observable params.x ? 50
+  y = Observable params.y ? 50
+  width = Observable params.width ? 400
+  height = Observable params.height ? 300
+  title = Observable params.title ? "Untitled"
 
   element = WindowTemplate
-    title: "Untitled"
-    menuBar: MenuBarView(items: notepadMenuParsed, handlers: {}).element
+    title: title
+    menuBar: params.menuBar
+    content: params.content
     close: ->
       self.close()
 

@@ -19,5 +19,7 @@ module.exports = {
   Observable: Observable
   Progress: ProgressView
   Style
+  Util:
+    parseMenu: require "./lib/indent-parse"
   Window: WindowView
 }

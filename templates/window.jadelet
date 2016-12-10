@@ -16,4 +16,6 @@ window
     title-bar= @title
     close(click=@close) X
   = @menuBar
-  content
+  viewport
+    = @content
+

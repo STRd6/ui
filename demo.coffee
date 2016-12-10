@@ -1,4 +1,7 @@
-{ContextMenu, MenuBar, Modal, Progress, Style, Window} = require "./export"
+{ContextMenu, MenuBar, Modal, Util:{parseMenu}, Progress, Style, Window} = require "./export"
+
+notepadMenuText = require "./samples/notepad-menu"
+notepadMenuParsed = parseMenu notepadMenuText
 
 FormSampleTemplate = require "./samples/test-form"
 
@@ -6,7 +9,7 @@ style = document.createElement "style"
 style.innerHTML = Style.all
 document.head.appendChild style
 
-sampleMenuParsed = require "../samples/demo"
+sampleMenuParsed = parseMenu require "../samples/demo"
 {element} = MenuBar
   items: sampleMenuParsed,
   handlers:
@@ -44,8 +47,13 @@ sampleMenuParsed = require "../samples/demo"
           Modal.hide()
       , 15
     newWindow: ->
+      img = document.createElement "img"
+      img.src = "https://s3.amazonaws.com/whimsyspace-databucket-1g3p6d9lcl6x1/danielx/data/pI1mvEvxcXJk4mNHNUW-kZsNJsrPDXcAtgguyYETRXQ"
+
       windowView = Window
-        yolo: {}
+        title: "Hello"
+        menuBar: MenuBar(items: notepadMenuParsed, handlers: {}).element
+        content: img
       document.body.appendChild windowView.element
 
 document.body.appendChild element

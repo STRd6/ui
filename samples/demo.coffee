@@ -1,6 +1,4 @@
-parse = require "../lib/indent-parse"
-
-module.exports = parse """
+module.exports = """
   [M]odal
     [A]lert
     [C]onfirm
