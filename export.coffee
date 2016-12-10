@@ -6,6 +6,7 @@ MenuBarView = require "./views/menu-bar"
 MenuItemView = require "./views/menu-item"
 Observable = require "observable"
 ProgressView = require "./views/progress"
+Style = require "./style"
 WindowView = require "./views/window"
 
 module.exports = {
@@ -17,5 +18,6 @@ module.exports = {
   MenuItem: MenuItemView
   Observable: Observable
   Progress: ProgressView
+  Style
   Window: WindowView
 }

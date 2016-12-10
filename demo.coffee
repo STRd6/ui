@@ -1,6 +1,4 @@
-Style = require "./style"
-
-{ContextMenu, MenuBar, Modal, Progress, Window} = require "./export"
+{ContextMenu, MenuBar, Modal, Progress, Style, Window} = require "./export"
 
 FormSampleTemplate = require "./samples/test-form"
 
