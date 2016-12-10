@@ -259,7 +259,7 @@
     },
     "pixie.cson": {
       "path": "pixie.cson",
-      "content": "version: \"0.1.1\"\nentryPoint: \"main\"\nremoteDependencies: [\n]\ndependencies:\n  observable: \"distri/observable:master\"\n",
+      "content": "version: \"0.1.2\"\nentryPoint: \"main\"\nremoteDependencies: [\n]\ndependencies:\n  observable: \"distri/observable:master\"\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -463,7 +463,7 @@
     },
     "pixie": {
       "path": "pixie",
-      "content": "module.exports = {\"version\":\"0.1.1\",\"entryPoint\":\"main\",\"remoteDependencies\":[],\"dependencies\":{\"observable\":\"distri/observable:master\"}};",
+      "content": "module.exports = {\"version\":\"0.1.2\",\"entryPoint\":\"main\",\"remoteDependencies\":[],\"dependencies\":{\"observable\":\"distri/observable:master\"}};",
       "type": "blob"
     },
     "samples/demo": {
@@ -606,14 +606,14 @@
     "url": "https://danielx.net/editor/"
   },
   "config": {
-    "version": "0.1.1",
+    "version": "0.1.2",
     "entryPoint": "main",
     "remoteDependencies": [],
     "dependencies": {
       "observable": "distri/observable:master"
     }
   },
-  "version": "0.1.1",
+  "version": "0.1.2",
   "entryPoint": "main",
   "remoteDependencies": [],
   "repository": {
