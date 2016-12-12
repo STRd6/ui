@@ -49,11 +49,14 @@ sampleMenuParsed = parseMenu require "../samples/demo"
     newWindow: ->
       # img = document.createElement "img"
       # img.src = "https://s3.amazonaws.com/whimsyspace-databucket-1g3p6d9lcl6x1/danielx/data/pI1mvEvxcXJk4mNHNUW-kZsNJsrPDXcAtgguyYETRXQ"
+      
+      frame = document.createElement "iframe"
+      frame.src = "https://danielx.net/pixel-editor/embedded/"
 
       windowView = Window
         title: "Hello"
         menuBar: MenuBar(items: notepadMenuParsed, handlers: {}).element
-        content: document.createElement "textarea"
+        content: frame
       document.body.appendChild windowView.element
 
 document.body.appendChild element

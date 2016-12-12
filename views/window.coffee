@@ -2,6 +2,11 @@ WindowTemplate = require "../templates/window"
 
 {elementView} = require "../util"
 
+# We need an invisible full screen overlay to keep iframes from eating our
+# mousemove events
+frameGuard = document.createElement "frame-guard"
+document.body.appendChild frameGuard
+
 # Drag Handling
 activeDrag = null
 dragStart = null
@@ -9,6 +14,7 @@ document.addEventListener "mousedown", (e) ->
   {target} = e
 
   if target.tagName is "TITLE-BAR"
+    frameGuard.classList.add("active")
     dragStart = e
     activeDrag = elementView target
 
@@ -25,9 +31,6 @@ document.addEventListener "mousemove", (e) ->
 
     dragStart = e
 
-document.addEventListener "mouseup", ->
-  activeDrag = null
-
 # Resize Handling
 activeResize = null
 resizeStart = null
@@ -36,6 +39,7 @@ document.addEventListener "mousedown", (e) ->
   {target} = e
 
   if target.tagName is "RESIZE"
+    frameGuard.classList.add("active")
     resizeStart = e
     activeResize = target
     {width, height, x, y} = elementView activeResize
@@ -85,7 +89,9 @@ document.addEventListener "mousemove", (e) ->
     view.height height
 
 document.addEventListener "mouseup", ->
+  activeDrag = null
   activeResize = null
+  frameGuard.classList.remove("active")
 
 Observable = require "observable"
 

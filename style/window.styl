@@ -53,6 +53,11 @@ window
       resize: none
       width: 100%
 
+    > iframe
+      border: none
+      height: 100%
+      width: 100%
+
   > resize
     display: block
     position: absolute
@@ -107,3 +112,14 @@ window
     &.w.h
       border-right: 1px solid black
       width: 23px
+
+frame-guard
+  display: block
+  height: 100%
+  pointer-events: none
+  position: absolute
+  width: 100%
+  z-index: 100000
+
+  &.active
+    pointer-events: auto
