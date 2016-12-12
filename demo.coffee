@@ -47,13 +47,13 @@ sampleMenuParsed = parseMenu require "../samples/demo"
           Modal.hide()
       , 15
     newWindow: ->
-      img = document.createElement "img"
-      img.src = "https://s3.amazonaws.com/whimsyspace-databucket-1g3p6d9lcl6x1/danielx/data/pI1mvEvxcXJk4mNHNUW-kZsNJsrPDXcAtgguyYETRXQ"
+      # img = document.createElement "img"
+      # img.src = "https://s3.amazonaws.com/whimsyspace-databucket-1g3p6d9lcl6x1/danielx/data/pI1mvEvxcXJk4mNHNUW-kZsNJsrPDXcAtgguyYETRXQ"
 
       windowView = Window
         title: "Hello"
         menuBar: MenuBar(items: notepadMenuParsed, handlers: {}).element
-        content: img
+        content: document.createElement "textarea"
       document.body.appendChild windowView.element
 
 document.body.appendChild element
