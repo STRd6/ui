@@ -18,5 +18,7 @@ module.exports = """
             Super Hecka
               Wicked
   [W]indow
-    [N]ew -> newWindow
+    New [I]mage -> newImage
+    New [P]ixel -> newPixel
+    New [T]ext -> newText
 """

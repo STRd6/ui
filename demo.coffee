@@ -46,18 +46,28 @@ sampleMenuParsed = parseMenu require "../samples/demo"
           clearInterval intervalId
           Modal.hide()
       , 15
-    newWindow: ->
-      # img = document.createElement "img"
-      # img.src = "https://s3.amazonaws.com/whimsyspace-databucket-1g3p6d9lcl6x1/danielx/data/pI1mvEvxcXJk4mNHNUW-kZsNJsrPDXcAtgguyYETRXQ"
-      
+    newImage: ->
+      img = document.createElement "img"
+      img.src = "https://s3.amazonaws.com/whimsyspace-databucket-1g3p6d9lcl6x1/danielx/data/pI1mvEvxcXJk4mNHNUW-kZsNJsrPDXcAtgguyYETRXQ"
+
+      addWindow
+        title: "Yoo"
+        content: img
+
+    newPixel: ->
       frame = document.createElement "iframe"
       frame.src = "https://danielx.net/pixel-editor/embedded/"
 
-      windowView = Window
-        title: "Hello"
-        menuBar: MenuBar(items: notepadMenuParsed, handlers: {}).element
+      addWindow
+        title: "Pixel"
         content: frame
-      document.body.appendChild windowView.element
+
+    newText: ->
+      textarea = document.createElement "textarea"
+
+      addWindow
+        title: "Notepad.exe"
+        content: textarea
 
 document.body.appendChild element
 
@@ -73,3 +83,16 @@ document.addEventListener "contextmenu", (e) ->
       inElement: document.body
       x: e.pageX
       y: e.pageY
+
+addWindow = ({title, menuBar, content}) ->
+  menuBar ?= MenuBar(items: notepadMenuParsed, handlers: {}).element
+  title ?= "Hello"
+
+  windowView = Window
+    title: title
+    menuBar: menuBar
+    content: content
+
+  document.body.appendChild windowView.element
+
+  return windowView
