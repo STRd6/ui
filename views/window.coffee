@@ -7,16 +7,28 @@ WindowTemplate = require "../templates/window"
 frameGuard = document.createElement "frame-guard"
 document.body.appendChild frameGuard
 
+topIndex = 0
+raiseToTop = (view) ->
+  zIndex = view.zIndex()
+  return if zIndex is topIndex
+  topIndex += 1
+
+  view.zIndex(topIndex)
+
 # Drag Handling
 activeDrag = null
 dragStart = null
 document.addEventListener "mousedown", (e) ->
   {target} = e
 
+  view = elementView target
+  if view
+    raiseToTop view
+
   if target.tagName is "TITLE-BAR"
     frameGuard.classList.add("active")
     dragStart = e
-    activeDrag = elementView target
+    activeDrag = view
 
 document.addEventListener "mousemove", (e) ->
   if activeDrag
@@ -102,6 +114,9 @@ module.exports = (params) ->
   height = Observable params.height ? 300
   title = Observable params.title ? "Untitled"
 
+  topIndex += 1
+  zIndex = Observable params.zIndex ? topIndex
+
   element = WindowTemplate
     title: title
     menuBar: params.menuBar
@@ -109,10 +124,11 @@ module.exports = (params) ->
     close: ->
       self.close()
 
-  styleBindPx(y, element, "top")
-  styleBindPx(x, element, "left")
-  styleBindPx(height, element, "height")
-  styleBindPx(width, element, "width")
+  styleBind(y, element, "top", "px")
+  styleBind(x, element, "left", "px")
+  styleBind(height, element, "height", "px")
+  styleBind(width, element, "width", "px")
+  styleBind(zIndex, element, "zIndex")
 
   self =
     element: element
@@ -120,6 +136,7 @@ module.exports = (params) ->
     y: y
     width: width
     height: height
+    zIndex: zIndex
     close: ->
       element.remove()
 
@@ -127,12 +144,12 @@ module.exports = (params) ->
 
   return self
 
-styleBindPx = (observable, element, attr) ->
+styleBind = (observable, element, attr, suffix="") ->
   update = (newValue) ->
     newValue = parseInt newValue
 
     if newValue?
-      element.style[attr] = "#{newValue}px"
+      element.style[attr] = "#{newValue}#{suffix}"
 
   observable.observe update
 

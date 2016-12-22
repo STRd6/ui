@@ -71,12 +71,15 @@ sampleMenuParsed = parseMenu require "../samples/demo"
 
 document.body.appendChild element
 
+desktop = document.createElement "desktop"
+document.body.appendChild desktop
+
 contextMenu = ContextMenu
   items: sampleMenuParsed[1][1]
   handlers: {}
 
-document.addEventListener "contextmenu", (e) ->
-  if e.target is document.body
+desktop.addEventListener "contextmenu", (e) ->
+  if e.target is desktop
     e.preventDefault()
 
     contextMenu.display
@@ -93,6 +96,6 @@ addWindow = ({title, menuBar, content}) ->
     menuBar: menuBar
     content: content
 
-  document.body.appendChild windowView.element
+  desktop.appendChild windowView.element
 
   return windowView
