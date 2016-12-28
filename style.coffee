@@ -5,6 +5,7 @@ all = """
   loader
   menu
   modal
+  table
   window
 """.split("\n").map (stylePath) ->
   content = require "./style/#{stylePath}"

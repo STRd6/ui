@@ -1,4 +1,7 @@
 {ContextMenu, MenuBar, Modal, Util:{parseMenu}, Progress, Style, Window} = require "./export"
+TableView = require "./experiments/spreadsheet"
+
+{o} = require "./util"
 
 notepadMenuText = require "./samples/notepad-menu"
 notepadMenuParsed = parseMenu notepadMenuText
@@ -9,7 +12,31 @@ style = document.createElement "style"
 style.innerHTML = Style.all
 document.head.appendChild style
 
-sampleMenuParsed = parseMenu require "../samples/demo"
+sampleMenuParsed = parseMenu """
+  [M]odal
+    [A]lert
+    [C]onfirm
+    [P]rompt
+    [F]orm
+    P[r]ogress
+  [T]est Nesting
+    Test[1]
+      Hello
+      Wat
+    Test[2]
+      [N]ested
+      [R]ad
+        So Rad
+        Hella
+          Hecka
+            Super Hecka
+              Wicked
+  [W]indow
+    New [I]mage -> newImage
+    New [P]ixel -> newPixel
+    New [T]ext -> newText
+    New [S]preadsheet -> newSheet
+"""
 {element} = MenuBar
   items: sampleMenuParsed,
   handlers:
@@ -68,6 +95,18 @@ sampleMenuParsed = parseMenu require "../samples/demo"
       addWindow
         title: "Notepad.exe"
         content: textarea
+
+    newSheet: ->
+      data = [0...100].map (i) ->
+        id: o i
+        name: o "yolo"
+        color: o "#FF0000", "color"
+
+      {element} = TableView data
+
+      addWindow
+        title: "Spreadsheet"
+        content: element
 
 document.body.appendChild element
 

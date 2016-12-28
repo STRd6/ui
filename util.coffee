@@ -1,8 +1,19 @@
+Observable = require "observable"
+
 A = (attr) ->
   (x) -> x[attr]
 
 F = (methodName) ->
   (x) -> x[methodName]()
+
+o = (value, type) ->
+  attribute = Observable(value)
+  if type
+    attribute.type = type
+
+  attribute.value = attribute
+
+  return attribute
 
 # Handle events by preventing the default action
 handle = (fn) ->
@@ -79,6 +90,7 @@ module.exports =
   A: A
   F: F
   S: S
+  o: o
 
   advance: advance
   asElement: asElement
