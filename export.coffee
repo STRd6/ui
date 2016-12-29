@@ -7,6 +7,7 @@ MenuItemView = require "./views/menu-item"
 Observable = require "observable"
 ProgressView = require "./views/progress"
 Style = require "./style"
+TableView = require "./views/table"
 WindowView = require "./views/window"
 
 module.exports = {
@@ -19,6 +20,7 @@ module.exports = {
   Observable: Observable
   Progress: ProgressView
   Style
+  Table: TableView
   Util:
     parseMenu: require "./lib/indent-parse"
   Window: WindowView

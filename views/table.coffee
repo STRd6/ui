@@ -29,14 +29,17 @@ advanceRow = (path, prev) ->
     input = nextRowElement.children[cellIndex].querySelector('input')
     input?.focus()
 
-# TableView takes some data and returns an object with a container element
+# TableView takes an observale array of data and returns an object with a container element
 # displaying the table data that can be inserted into the DOM.
-# The DOM elements are inserted in chunks so the table should scale to
-# displaying large volumes of data.
+
+# When the data observable changes the entire table is rerendered.
+# Individual items can change their properties without rerendering the entire table.
+
 # The view will have the ability to filter/sort the data.
-# When the layout changes the refresh method should be called to ensure the
-# scrollable and visible items are correct for the new container size.
-TableView = (data) ->
+
+TableView = (observableData) ->
+  data = observableData()
+
   containerElement = TableTemplate
     headers: Object.keys data[0]
     keydown: (event) ->

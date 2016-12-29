@@ -1,5 +1,4 @@
-{ContextMenu, MenuBar, Modal, Util:{parseMenu}, Progress, Style, Window} = require "./export"
-TableView = require "./experiments/spreadsheet"
+{ContextMenu, MenuBar, Modal, Observable, Util:{parseMenu}, Progress, Style, Table, Window} = require "./export"
 
 {o} = require "./util"
 
@@ -97,12 +96,12 @@ sampleMenuParsed = parseMenu """
         content: textarea
 
     newSheet: ->
-      data = [0...100].map (i) ->
+      data = Observable [0...100].map (i) ->
         id: o i
         name: o "yolo"
         color: o "#FF0000", "color"
 
-      {element} = TableView data
+      {element} = Table data
 
       addWindow
         title: "Spreadsheet"
