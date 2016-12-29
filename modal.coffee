@@ -18,7 +18,7 @@ You can display any element in the modal:
 
 ###
 
-{formDataToObject, handle} = require "./util"
+{formDataToObject, handle, empty} = require "./util"
 
 PromptTemplate = require "./templates/modal/prompt"
 ModalTemplate = require "./templates/modal"
@@ -108,9 +108,3 @@ module.exports = Modal =
       Modal.show formElement, (result) ->
         formElement.removeEventListener "submit", submitHandler
         resolve(result)
-
-empty = (node) ->
-  while node.hasChildNodes()
-    node.removeChild(node.lastChild)
-
-  return node

@@ -82,6 +82,13 @@ elementView = (element) ->
   return element.view if element.view
   elementView element.parentElement
 
+# Remove all children from a dom node
+empty = (node) ->
+  while node.hasChildNodes()
+    node.removeChild(node.lastChild)
+
+  return node
+
 module.exports =
   htmlEscape: (string) ->
     String(string).replace /[&<>"'\/]/g, (s) ->
@@ -96,6 +103,7 @@ module.exports =
   asElement: asElement
   accelerateItem: accelerateItem
   elementView: elementView
+  empty: empty
   formDataToObject: formDataToObject
   handle: handle
   isDescendant: isDescendant

@@ -1,3 +1,5 @@
+{empty} = require "../util"
+
 InputTemplate = require "../templates/input"
 
 RowElement = (datum) ->
@@ -76,8 +78,16 @@ TableView = (observableData) ->
   rowElements = ->
     filterAndSort(data, filterFn, sortFn).map RowElement
 
-  rowElements().forEach (element) ->
-    tableBody.appendChild element
+  update = ->
+    empty tableBody
+    rowElements().forEach (element) ->
+      tableBody.appendChild element
+
+  observableData.observe (newData) ->
+    data = newData
+    update()
+
+  update()
 
   element: containerElement
 
