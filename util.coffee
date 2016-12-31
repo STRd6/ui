@@ -6,12 +6,12 @@ A = (attr) ->
 F = (methodName) ->
   (x) -> x[methodName]()
 
-o = (value, type) ->
-  attribute = Observable(value)
-  if type
-    attribute.type = type
+# Observable attribute helper
+o = (object, name) ->
+  attribute = Observable(object[name])
 
-  attribute.value = attribute
+  attribute.observe (newValue) ->
+    object[name] = newValue
 
   return attribute
 

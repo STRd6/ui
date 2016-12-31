@@ -96,12 +96,34 @@ sampleMenuParsed = parseMenu """
         content: textarea
 
     newSheet: ->
-      data = Observable [0...5].map (i) ->
-        id: o i
-        name: o "yolo"
-        color: o "#FF0000", "color"
+      data = [0...5].map (i) ->
+        id: i
+        name: "yolo"
+        color: "#FF0000"
 
-      {element} = Table data
+      InputTemplate = require "./templates/input"
+      RowElement = (datum) ->
+        tr = document.createElement "tr"
+        types = [
+          "number"
+          "text"
+          "color"
+        ]
+
+        Object.keys(datum).forEach (key, i) ->
+          td = document.createElement "td"
+          td.appendChild InputTemplate 
+            value: o datum, key
+            type: types[i]
+
+          tr.appendChild td
+
+        return tr
+
+      {element} = tableView = Table {
+        data
+        RowElement
+      }
 
       menuBar = MenuBar
         items: parseMenu """
@@ -115,9 +137,11 @@ sampleMenuParsed = parseMenu """
             Modal.alert "Spreadsheet v0.0.1 by Daniel X Moore"
           insertRow: ->
             data.push
-              id: o 50
-              name: o "new"
-              color: o "#FF00FF", "color"
+              id: 50
+              name: "new"
+              color: "#FF00FF"
+
+            tableView.render()
 
       addWindow
         title: "Spreadsheet [DEMO VERSION]"
