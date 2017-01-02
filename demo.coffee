@@ -112,7 +112,7 @@ sampleMenuParsed = parseMenu """
 
         Object.keys(datum).forEach (key, i) ->
           td = document.createElement "td"
-          td.appendChild InputTemplate 
+          td.appendChild InputTemplate
             value: o datum, key
             type: types[i]
 

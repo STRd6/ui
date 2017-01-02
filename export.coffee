@@ -12,6 +12,7 @@ WindowView = require "./views/window"
 
 module.exports = {
   Action: Action
+  Bindable: require "bindable"
   ContextMenu: ContextMenuView
   Modal
   Menu: MenuView

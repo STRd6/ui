@@ -4,3 +4,4 @@ remoteDependencies: [
 ]
 dependencies:
   observable: "distri/observable:master"
+  bindable: "distri/bindable:master"

@@ -100,14 +100,19 @@ document.addEventListener "mousemove", (e) ->
     view.width width
     view.height height
 
+    view.trigger "resize"
+
 document.addEventListener "mouseup", ->
   activeDrag = null
   activeResize = null
   frameGuard.classList.remove("active")
 
+Bindable = require "bindable"
 Observable = require "observable"
 
 module.exports = (params) ->
+  self = Bindable()
+
   x = Observable params.x ? 50
   y = Observable params.y ? 50
   width = Observable params.width ? 400
@@ -130,7 +135,7 @@ module.exports = (params) ->
   styleBind(width, element, "width", "px")
   styleBind(zIndex, element, "zIndex")
 
-  self =
+  Object.assign self,
     element: element
     x: x
     y: y
