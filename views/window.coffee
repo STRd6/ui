@@ -144,6 +144,8 @@ module.exports = (params) ->
     height: height
     zIndex: zIndex
     close: ->
+      # TODO: Allow prompt to cancel
+      # Maybe we count on people to override this method if they want
       element.remove()
 
   element.view = self
