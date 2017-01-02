@@ -137,6 +137,7 @@ module.exports = (params) ->
 
   Object.assign self,
     element: element
+    title: title
     x: x
     y: y
     width: width
