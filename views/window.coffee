@@ -9,6 +9,7 @@ document.body.appendChild frameGuard
 
 topIndex = 0
 raiseToTop = (view) ->
+  return unless typeof view.zIndex is 'function'
   zIndex = view.zIndex()
   return if zIndex is topIndex
   topIndex += 1
@@ -23,6 +24,7 @@ document.addEventListener "mousedown", (e) ->
 
   view = elementView target
   if view
+    # TODO: only raise widows?
     raiseToTop view
 
   if target.tagName is "TITLE-BAR"
