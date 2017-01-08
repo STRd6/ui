@@ -112,10 +112,8 @@ module.exports = ({label, MenuView, items, contextRoot, parent}) ->
 formatAction = (labelText) ->
   [title, action] = labelText.split("->").map F("trim")
 
-  action ?= title
-
-  str = action.replace(/[^A-Za-z0-9]/g, "")
-  action = str.charAt(0).toLowerCase() + str.substring(1)
+  action ?= title.replace(/[^A-Za-z0-9]/g, "")
+  action = action.charAt(0).toLowerCase() + action.substring(1)
 
   return [title, action]
 
