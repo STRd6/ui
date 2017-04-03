@@ -12,7 +12,7 @@ window(@class)
   resize.s.w.h
   resize.s.w.v
   header
-    icon
+    icon(style=@iconStyle)
     title-bar= @title
     control.minimize(click=@minimize)
     control.maximize
@@ -20,4 +20,3 @@ window(@class)
   = @menuBar
   viewport
     = @content
-
