@@ -12,6 +12,7 @@ window(@class)
   resize.s.w.h
   resize.s.w.v
   header
+    icon
     title-bar= @title
     control.minimize(click=@minimize)
     control.maximize
