@@ -12,9 +12,10 @@ window(@class)
   resize.s.w.h
   resize.s.w.v
   header
-    control(click=@minimize)
     title-bar= @title
-    close(click=@close)
+    control.minimize(click=@minimize)
+    control.maximize
+    control.close(click=@close)
   = @menuBar
   viewport
     = @content

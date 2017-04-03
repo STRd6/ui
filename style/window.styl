@@ -28,15 +28,6 @@ window
     flex: 0 0 auto
 
     > control
-      &:first-child
-        &::before
-          content: "-"
-
-    > close
-      &::before
-        content: "X"
-
-    > close, > control
       color: white
       display: inline-block
       flex: 0 0 auto
@@ -44,6 +35,20 @@ window
       width: 18px
       text-shadow: 1px 0px 0px #000, -1px 0px 0px #000, 0px -1px 0px #000, 0px 1px 0px #000, 1px 1px 0px #808080
       text-align: center
+
+      &.close
+        &::before
+          content: "X"
+
+      &.maximize
+        border-right: 1px solid border-color
+        &::before
+          content: "🗖"
+
+      &.minimize
+        border-right: 1px solid border-color
+        &::before
+          content: "-"
 
     > title-bar
       background-color: #000080
@@ -142,9 +147,13 @@ window
   &.minimized
     > header
       border-bottom: none
-      
+
       > control
-        &:first-child
+        display: none
+
+        &.minimize
+          border-right: none
+          display: inline-block
           &::before
             content: "+"
 
