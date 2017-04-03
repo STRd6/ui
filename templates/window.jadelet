@@ -1,4 +1,4 @@
-window
+window(@class)
   resize.n.h
   resize.e.v
   resize.s.h
@@ -12,9 +12,9 @@ window
   resize.s.w.h
   resize.s.w.v
   header
-    control -
+    control(click=@minimize)
     title-bar= @title
-    close(click=@close) X
+    close(click=@close)
   = @menuBar
   viewport
     = @content

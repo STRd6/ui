@@ -10,20 +10,31 @@ desktop
   display: block
   flex: 1 0 auto
 
+border-color = rgba(0, 0, 0, 0.87)
+
 window
   no-select()
 
   background-color: lightgrey
-  border: 4px double black
+  border: 4px double border-color
   display: flex
   flex-direction: column
   position: absolute
 
   > header
-    border-bottom: 1px solid black
+    border-bottom: 1px solid border-color
     cursor: default
     display: flex
     flex: 0 0 auto
+
+    > control
+      &:first-child
+        &::before
+          content: "-"
+
+    > close
+      &::before
+        content: "X"
 
     > close, > control
       color: white
@@ -43,7 +54,7 @@ window
       display: inline-block
       flex: 1 1 auto
       overflow: hidden
-      padding: 0 2px
+      padding: 0 1rem
       text-align: center
       text-overflow: ellipsis
       white-space: nowrap
@@ -60,8 +71,10 @@ window
       margin: auto
 
     > textarea
+      border: none
       font-family: monospace
       height: 100%
+      padding: 2px 4px
       resize: none
       width: 100%
 
@@ -125,6 +138,18 @@ window
     &.w.h
       border-right: 1px solid black
       width: 23px
+
+  &.minimized
+    > header
+      border-bottom: none
+      
+      > control
+        &:first-child
+          &::before
+            content: "+"
+
+    > menu, > resize, > viewport
+      display: none
 
 frame-guard
   display: block

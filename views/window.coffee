@@ -120,6 +120,9 @@ module.exports = (params) ->
   width = Observable params.width ? 400
   height = Observable params.height ? 300
   title = Observable params.title ? "Untitled"
+  minimized = Observable false
+  prevWidth = Observable null
+  prevHeight = Observable null
 
   topIndex += 1
   zIndex = Observable params.zIndex ? topIndex
@@ -128,8 +131,12 @@ module.exports = (params) ->
     title: title
     menuBar: params.menuBar
     content: params.content
+    class: ->
+      "minimized" if minimized()
     close: ->
       self.close()
+    minimize: ->
+      self.minimize()
 
   styleBind(y, element, "top", "px")
   styleBind(x, element, "left", "px")
@@ -149,6 +156,18 @@ module.exports = (params) ->
       # TODO: Allow prompt to cancel
       # Maybe we count on people to override this method if they want
       element.remove()
+    minimize: ->
+      minimized.toggle()
+
+      if minimized()
+        prevWidth width()
+        prevHeight height()
+
+        width null
+        height null
+      else
+        width prevWidth()
+        height prevHeight()
 
   element.view = self
 
@@ -156,10 +175,11 @@ module.exports = (params) ->
 
 styleBind = (observable, element, attr, suffix="") ->
   update = (newValue) ->
-    newValue = parseInt newValue
 
-    if newValue?
+    if newValue? and (newValue = parseInt newValue)?
       element.style[attr] = "#{newValue}#{suffix}"
+    else
+      element.style[attr] = null
 
   observable.observe update
 
