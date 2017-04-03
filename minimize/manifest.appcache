@@ -1,0 +1,12 @@
+CACHE MANIFEST
+# 1491191223917
+
+CACHE:
+index.html
+../minimize.json
+
+
+NETWORK:
+https://*
+http://*
+*
