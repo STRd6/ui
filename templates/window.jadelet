@@ -15,7 +15,8 @@ window(@class)
     icon(style=@iconStyle)
     title-bar= @title
     control.minimize(click=@minimize)
-    control.maximize
+    control.maximize(click=@maximize)
+    control.restore(click=@restore)
     control.close(click=@close)
   = @menuBar
   viewport

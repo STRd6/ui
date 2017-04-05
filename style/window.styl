@@ -45,19 +45,26 @@ window
       text-shadow: 1px 0px 0px #000, -1px 0px 0px #000, 0px -1px 0px #000, 0px 1px 0px #000, 1px 1px 0px #808080
       text-align: center
 
+      border-left: 1px solid border-color
+      &:first-child
+        border-left: none
+
       &.close
         &::before
           content: "X"
 
       &.maximize
-        border-right: 1px solid border-color
         &::before
-          content: "🗖"
+          content: "⏫"
 
       &.minimize
-        border-right: 1px solid border-color
         &::before
           content: "-"
+
+      &.restore
+        display: none
+        &::before
+          content: "⏬"
 
     > title-bar
       background-color: #000080
@@ -164,6 +171,17 @@ window
 
     > menu, > resize, > viewport
       display: none
+
+  &.maximized
+    height: 100%
+    width: 100%
+
+    > header
+      > control
+        display: none
+
+        &.restore, &.close
+          display: inline-block
 
 frame-guard
   display: block
