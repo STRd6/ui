@@ -259,7 +259,7 @@
     },
     "pixie.cson": {
       "path": "pixie.cson",
-      "content": "version: \"0.1.2\"\nentryPoint: \"main\"\nremoteDependencies: [\n]\ndependencies:\n  observable: \"distri/observable:master\"\n  bindable: \"distri/bindable:master\"\n",
+      "content": "version: \"0.1.3\"\nentryPoint: \"main\"\nremoteDependencies: [\n]\ndependencies:\n  observable: \"distri/observable:master\"\n  bindable: \"distri/bindable:master\"\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -481,7 +481,7 @@
     },
     "pixie": {
       "path": "pixie",
-      "content": "module.exports = {\"version\":\"0.1.2\",\"entryPoint\":\"main\",\"remoteDependencies\":[],\"dependencies\":{\"observable\":\"distri/observable:master\",\"bindable\":\"distri/bindable:master\"}};",
+      "content": "module.exports = {\"version\":\"0.1.3\",\"entryPoint\":\"main\",\"remoteDependencies\":[],\"dependencies\":{\"observable\":\"distri/observable:master\",\"bindable\":\"distri/bindable:master\"}};",
       "type": "blob"
     },
     "samples/notepad-menu": {
@@ -639,7 +639,7 @@
     "url": "https://danielx.net/editor/"
   },
   "config": {
-    "version": "0.1.2",
+    "version": "0.1.3",
     "entryPoint": "main",
     "remoteDependencies": [],
     "dependencies": {
@@ -647,7 +647,7 @@
       "bindable": "distri/bindable:master"
     }
   },
-  "version": "0.1.2",
+  "version": "0.1.3",
   "entryPoint": "main",
   "remoteDependencies": [],
   "repository": {
