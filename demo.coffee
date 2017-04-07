@@ -79,6 +79,7 @@ sampleMenuParsed = parseMenu """
       addWindow
         title: "Yoo"
         content: img
+        iconEmoji: "💼"
 
     newPixel: ->
       frame = document.createElement "iframe"
@@ -166,14 +167,8 @@ desktop.addEventListener "contextmenu", (e) ->
       x: e.pageX
       y: e.pageY
 
-addWindow = ({title, menuBar, content}) ->
-  menuBar ?= MenuBar(items: notepadMenuParsed, handlers: {}).element
-  title ?= "Hello"
-
-  windowView = Window
-    title: title
-    menuBar: menuBar
-    content: content
+addWindow = (params) ->
+  windowView = Window params
 
   desktop.appendChild windowView.element
 

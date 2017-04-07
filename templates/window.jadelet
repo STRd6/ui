@@ -12,7 +12,7 @@ window(@class)
   resize.s.w.h
   resize.s.w.v
   header
-    icon(style=@iconStyle)
+    icon(style=@iconStyle)= @iconEmoji
     title-bar= @title
     control.minimize(click=@minimize)
     control.maximize(click=@maximize)
