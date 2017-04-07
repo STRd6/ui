@@ -190,6 +190,8 @@ module.exports = (params) ->
     minimized false
     maximized false
 
+    self.trigger "resize"
+
   Object.assign self,
     element: element
     title: title
@@ -218,6 +220,7 @@ module.exports = (params) ->
         x 0
         y 0
 
+        self.trigger "resize"
         self.trigger "maximize"
       else
         restore()
@@ -233,6 +236,7 @@ module.exports = (params) ->
         width null
         height null
 
+        self.trigger "resize"
         self.trigger "minimize"
       else
         restore()
