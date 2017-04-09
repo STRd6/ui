@@ -194,6 +194,8 @@ module.exports = (params) ->
 
   Object.assign self,
     element: element
+    iconEmoji: iconEmoji
+    iconURL: iconURL
     title: title
     x: x
     y: y
