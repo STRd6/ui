@@ -17,18 +17,19 @@ window
 
   background-color: lightgrey
   border: 4px double border-color
+  border-radius: 4px
   display: flex
   flex-direction: column
   position: absolute
 
   > header
+    background-color: #000080
     border-bottom: 1px solid border-color
     cursor: default
     display: flex
     flex: 0 0 auto
 
     > icon
-      background-color: #000080
       background-position: 50%
       background-repeat: no-repeat
       background-size: 16px
@@ -39,6 +40,7 @@ window
       width: 0
 
     > control
+      background-color: lightgrey
       color: white
       display: inline-block
       flex: 0 0 auto
@@ -69,7 +71,6 @@ window
           content: "⏬"
 
     > title-bar
-      background-color: #000080
       color: white
       display: inline-block
       flex: 1 1 auto
@@ -143,20 +144,20 @@ window
       cursor: sw-resize
 
     &.n.v
-      height: 23px
       border-bottom: 1px solid black
+      height: 22px
 
     &.s.v
-      height: 23px
       border-top: 1px solid black
+      height: 22px
 
     &.e.h
       border-left: 1px solid black
-      width: 23px
+      width: 22px
 
     &.w.h
       border-right: 1px solid black
-      width: 23px
+      width: 22px
 
   &.minimized
     > header
@@ -175,8 +176,13 @@ window
       display: none
 
   &.maximized
+    border: none
+    border-radius: 0
     height: 100%
     width: 100%
+
+    > resize
+      display: none
 
     > header
       > control
