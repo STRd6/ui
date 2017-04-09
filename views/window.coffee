@@ -246,6 +246,9 @@ module.exports = (params) ->
     restore: ->
       restore()
 
+    raiseToTop: ->
+      raiseToTop self
+
   element.view = self
 
   return self
