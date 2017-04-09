@@ -10,22 +10,37 @@ desktop
   display: block
   flex: 1 0 auto
 
+border-color = rgba(0, 0, 0, 0.87)
+
 window
   no-select()
 
   background-color: lightgrey
-  border: 4px double black
+  border: 4px double border-color
+  border-radius: 4px
   display: flex
   flex-direction: column
   position: absolute
 
   > header
-    border-bottom: 1px solid black
+    background-color: #000080
+    border-bottom: 1px solid border-color
     cursor: default
     display: flex
     flex: 0 0 auto
 
-    > close, > control
+    > icon
+      background-position: 50%
+      background-repeat: no-repeat
+      background-size: 16px
+      color: white
+      display: inline-block
+      flex: 0 0 auto
+      text-align: center
+      width: 0
+
+    > control
+      background-color: lightgrey
       color: white
       display: inline-block
       flex: 0 0 auto
@@ -34,17 +49,33 @@ window
       text-shadow: 1px 0px 0px #000, -1px 0px 0px #000, 0px -1px 0px #000, 0px 1px 0px #000, 1px 1px 0px #808080
       text-align: center
 
+      border-left: 1px solid border-color
+      &:first-child
+        border-left: none
+
+      &.close
+        &::before
+          content: "X"
+
+      &.maximize
+        &::before
+          content: "⏫"
+
+      &.minimize
+        &::before
+          content: "-"
+
+      &.restore
+        display: none
+        &::before
+          content: "⏬"
+
     > title-bar
-      background-color: #000080
-      border-color: black
-      border-style: solid
-      border-width: 0 1px
       color: white
       display: inline-block
       flex: 1 1 auto
       overflow: hidden
-      padding: 0 2px
-      text-align: center
+      padding: 0 1rem 0 6px
       text-overflow: ellipsis
       white-space: nowrap
 
@@ -60,8 +91,10 @@ window
       margin: auto
 
     > textarea
+      border: none
       font-family: monospace
       height: 100%
+      padding: 2px 4px
       resize: none
       width: 100%
 
@@ -111,20 +144,52 @@ window
       cursor: sw-resize
 
     &.n.v
-      height: 23px
       border-bottom: 1px solid black
+      height: 22px
 
     &.s.v
-      height: 23px
       border-top: 1px solid black
+      height: 22px
 
     &.e.h
       border-left: 1px solid black
-      width: 23px
+      width: 22px
 
     &.w.h
       border-right: 1px solid black
-      width: 23px
+      width: 22px
+
+  &.minimized
+    > header
+      border-bottom: none
+
+      > control
+        display: none
+
+        &.minimize
+          border-right: none
+          display: inline-block
+          &::before
+            content: "+"
+
+    > menu, > resize, > viewport
+      display: none
+
+  &.maximized
+    border: none
+    border-radius: 0
+    height: 100%
+    width: 100%
+
+    > resize
+      display: none
+
+    > header
+      > control
+        display: none
+
+        &.restore, &.close
+          display: inline-block
 
 frame-guard
   display: block

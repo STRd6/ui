@@ -37,6 +37,14 @@ document.addEventListener "mousemove", (e) ->
     {clientX:prevX, clientY:prevY} = dragStart
     {clientX:x, clientY:y} = e
 
+    if activeDrag.maximized()
+      maximizedX = activeDrag.x()
+      maximizedY = activeDrag.y()
+
+      activeDrag.restore()
+      activeDrag.x x - activeDrag.width() / 2
+      activeDrag.y maximizedY
+
     dx = x - prevX
     dy = y - prevY
 
@@ -120,16 +128,48 @@ module.exports = (params) ->
   width = Observable params.width ? 400
   height = Observable params.height ? 300
   title = Observable params.title ? "Untitled"
+  minimized = Observable false
+  maximized = Observable false
+  prevWidth = Observable null
+  prevHeight = Observable null
+  prevX = Observable null
+  prevY = Observable null
+  iconURL = Observable params.iconURL or "data:image/x-icon;base64,AAABAAIAICAQAAEABADoAgAAJgAAABAQEAABAAQAKAEAAA4DAAAoAAAAIAAAAEAAAAABAAQAAAAAAIACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvwAAvwAAAL+/AL8AAAC/AL8Av78AAMDAwACAgIAAAAD/AAD/AAAA//8A/wAAAP8A/wD//wAA////AAAAAAAAAAAAAAAAAAAAAAAACHd3d3d3d3d3d3d3dwAAAAj///////////////cAAAAI///////////////3AAAACP///////3d///d39wAAAAj/zMzM//mZ//+Zn/cAAAAI////////l///+X/3AAAACP/MzMzM//l3d3l/9wAAAAj/////////mZmZf/cAAAAI/8zMzMzM//l/+X/3AAAACP//////////l/l/9wAAAAj/zMzMzMzM//l5f/cAAAAI////////////mX/3AAAACP/MzMzMzMzM//n/9wAAAAj///////////////cAAAAI/8zMzMzMzMzMzP/3AAAACP//////////////9wAAAAj/zMzMzMzMzMzM//cAAAAI///////////////3AAAACP8AAAAA/8zMzMz/9wAAAAj/iZD/8P////////cAAAAI/4AAAAD/zMzMzP/3AAAACP+P8Luw////////9wAAAAj/gAC7sP/MzMzM//cAAAAI/4/wu7D////////3AAAACP+P8Luw/////4AAAAAAAAj/j/AAAP////+P94AAAAAI/4/wzMD/////j3gAAAAACP+IiIiA/////4eAAAAAAAj///////////+IAAAAAAAI////////////gAAAAAAACIiIiIiIiIiIiIAAAAAA4AAAB+AAAAfgAAAH4AAAB+AAAAfgAAAH4AAAB+AAAAfgAAAH4AAAB+AAAAfgAAAH4AAAB+AAAAfgAAAH4AAAB+AAAAfgAAAH4AAAB+AAAAfgAAAH4AAAB+AAAAfgAAAH4AAAB+AAAAfgAAAP4AAAH+AAAD/gAAB/4AAA/+AAAf8oAAAAEAAAACAAAAABAAQAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvwAAvwAAAL+/AL8AAAC/AL8Av78AAMDAwACAgIAAAAD/AAD/AAAA//8A/wAAAP8A/wD//wAA////AAAAAAAAAAAACHd3d3d3cAAI//////9wAAj8z5//n3AACP//+ZmfcAAI/MzPn59wAAj////5n3AACPzMzM+fcAAI//////9wAAjwAPzMz3AACPmY////cAAI/Pj8zM9wAAj8+P//AAAACPiI//9/gAAI/////3gAAAiIiIiIgAAAgAMAAIADAACAAwAAgAMAAIADAACAAwAAgAMAAIADAACAAwAAgAMAAIADAACAAwAAgAMAAIAHAACADwAAgB8AAA=="
+  iconEmoji = Observable params.iconEmoji or null
+
+  iconStyle = Observable ->
+    if iconEmoji()
+      """
+        width: 18px;
+      """
+    else
+      """
+        background-image: url(#{iconURL()});
+        width: 18px;
+      """
 
   topIndex += 1
   zIndex = Observable params.zIndex ? topIndex
 
   element = WindowTemplate
+    iconStyle: iconStyle
+    iconEmoji: iconEmoji
     title: title
     menuBar: params.menuBar
     content: params.content
+    class: ->
+      [
+        "minimized" if minimized()
+        "maximized" if maximized()
+      ]
     close: ->
       self.close()
+    minimize: ->
+      self.minimize()
+    maximize: ->
+      self.maximize()
+    restore: ->
+      self.restore()
 
   styleBind(y, element, "top", "px")
   styleBind(x, element, "left", "px")
@@ -137,8 +177,25 @@ module.exports = (params) ->
   styleBind(width, element, "width", "px")
   styleBind(zIndex, element, "zIndex")
 
+  restore = ->
+    if prevX()?
+      x prevX()
+
+    if prevY()?
+      y prevY()
+
+    width prevWidth()
+    height prevHeight()
+
+    minimized false
+    maximized false
+
+    self.trigger "resize"
+
   Object.assign self,
     element: element
+    iconEmoji: iconEmoji
+    iconURL: iconURL
     title: title
     x: x
     y: y
@@ -150,16 +207,59 @@ module.exports = (params) ->
       # Maybe we count on people to override this method if they want
       element.remove()
 
+    maximized: maximized
+    maximize: ->
+      maximized.toggle()
+
+      if maximized()
+        prevWidth width()
+        prevHeight height()
+        prevX x()
+        prevY y()
+
+        width null
+        height null
+        x 0
+        y 0
+
+        self.trigger "resize"
+        self.trigger "maximize"
+      else
+        restore()
+
+    minimized: minimized
+    minimize: ->
+      minimized.toggle()
+
+      if minimized()
+        prevWidth width()
+        prevHeight height()
+
+        width null
+        height null
+
+        self.trigger "resize"
+        self.trigger "minimize"
+      else
+        restore()
+
+    restore: ->
+      restore()
+
+    raiseToTop: ->
+      raiseToTop self
+
   element.view = self
 
   return self
 
 styleBind = (observable, element, attr, suffix="") ->
   update = (newValue) ->
-    newValue = parseInt newValue
 
-    if newValue?
+    if newValue? and (newValue = parseInt newValue)?
       element.style[attr] = "#{newValue}#{suffix}"
+    else
+      element.style[attr] = null
 
   observable.observe update
 
