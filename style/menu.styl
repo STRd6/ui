@@ -105,3 +105,8 @@ menu.bar
   &.accelerator-active
     span.accelerator
       text-decoration: underline
+
+// For context menus starting from the bottom of the screen
+menu.options.bottoms-up menu-item.menu > menu
+  top: initial
+  bottom: -4px

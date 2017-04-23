@@ -16,8 +16,9 @@ MenuView = require "./menu"
 
 {isDescendant} = require "../util"
 
-module.exports = ({items, handlers}) ->
+module.exports = ({items, classes, handlers}) ->
   activeItem = Observable null
+  classes ?= []
   top = Observable ""
   left = Observable ""
 
@@ -28,7 +29,7 @@ module.exports = ({items, handlers}) ->
   self = MenuView
     items: items
     contextRoot: contextRoot
-    classes: -> ["context", "options"]
+    classes: -> ["context", "options"].concat(classes)
     style: ->
       "top: #{top()}px; left: #{left()}px"
 
