@@ -24,12 +24,18 @@ sampleMenuParsed = parseMenu """
       Wat
     Test[2]
       [N]ested
+      -----
       [R]ad
         So Rad
+        =====
         Hella
           Hecka
             Super Hecka
               Wicked
+          ---
+          -
+          -
+          ==
   [W]indow
     New [I]mage -> newImage
     New [P]ixel -> newPixel

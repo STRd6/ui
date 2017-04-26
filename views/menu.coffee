@@ -34,7 +34,7 @@ module.exports = MenuView = ({items, classes, style, contextRoot, parent}) ->
   # Promote item data to MenuItemViews
   items = items.map (item) ->
     switch
-      when item is "-"
+      when typeof item is "string" and item.match(/^[=-]+$/)
         SeparatorView()
       when Array.isArray(item)
         assert item.length is 2
