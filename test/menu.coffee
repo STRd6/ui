@@ -1,97 +1,37 @@
-parse = require "../lib/indent-parse"
+MenuView = require "../views/menu"
+Observable = require "observable"
 
-describe "Menu Parser", ->
-  it "should parse menus into lists", ->
-    data = """
-      File
-    """
+describe "Menu", ->
+  # TODO: Make context root optional
 
-    results = parse(data)
-    assert.deepEqual ["File"], results
+  it "should work with plain ol' items", ->
+    menu = MenuView
+      items: [
+        "Cool"
+        "Rad"
+      ]
+      contextRoot:
+        activeItem: Observable null
+        handlers: {}
 
-  it "should parse empty", ->
-    data = """
-    """
+    assert.equal menu.items().length, 2
 
-    assert.deepEqual [], parse(data)
+  it "should allow observable items", ->
+    items = Observable [
+      "Cool"
+      ["Rad", ["2rad", "2Furious"]]
+    ]
 
-  it "should deal with nesting ok", ->
-    data = """
-      File
-        Open
-        Save
-      Edit
-        Copy
-        Paste
-      Help
-    """
+    menu = MenuView
+      items: items
+      contextRoot:
+        activeItem: Observable null
+        handlers: {}
 
-    results = parse(data)
-    assert.deepEqual [
-      ["File", ["Open", "Save"]]
-      ["Edit", ["Copy", "Paste"]]
-      "Help"
-    ], results
+    assert.equal menu.items().length, 2
 
-  it "should parse big ol' menus", ->
-    results = parse """
-      File
-        New
-        Open
-        Save
-        Save As
-      Edit
-        Undo
-        Redo
-        -
-        Cut
-        Copy
-        Paste
-        Delete
-        -
-        Find
-        Find Next
-        Replace
-        Go To
-        -
-        Select All
-        Time/Date
-      Format
-        Word Wrap
-        Font...
-      View
-        Status Bar
-      Help
-        View Help
-        -
-        About Notepad
-    """
+    items [
+      "New Stuff"
+    ]
 
-    assert.deepEqual [
-      ["File", ["New", "Open", "Save", "Save As"]]
-      ["Edit", ["Undo", "Redo", "-", "Cut", "Copy", "Paste", "Delete", "-", "Find", "Find Next", "Replace", "Go To", "-", "Select All", "Time/Date"]]
-      ["Format", ["Word Wrap", "Font..."]]
-      ["View", ["Status Bar"]]
-      ["Help", ["View Help", "-", "About Notepad"]]
-    ], results
-
-  it "should parse hella nested menus", ->
-    results = parse """
-      File
-        Special
-          Nested
-            Super
-              Awesome
-    """
-
-    assert.deepEqual [
-      ["File", [
-        ["Special", [
-          ["Nested", [
-            ["Super", [
-              "Awesome"
-            ]]
-          ]]
-        ]]
-      ]]
-    ], results
+    assert.equal menu.items().length, 1

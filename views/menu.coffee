@@ -2,7 +2,7 @@ Observable = require "observable"
 
 assert = require "../lib/assert"
 
-{advance, accelerateItem, asElement, F, S, htmlEscape, handle, isDescendant} = require "../util"
+{advance, accelerateItem, asElement, get, F, S, htmlEscape, handle, isDescendant} = require "../util"
 
 MenuTemplate = require "../templates/menu"
 MenuItemTemplate = require "../templates/menu-item"
@@ -31,28 +31,30 @@ module.exports = MenuView = ({items, classes, style, contextRoot, parent}) ->
 
   {activeItem} = contextRoot
 
-  # Promote item data to MenuItemViews
-  items = items.map (item) ->
-    switch
-      when typeof item is "string" and item.match(/^[=-]+$/)
-        SeparatorView()
-      when Array.isArray(item)
-        assert item.length is 2
-        [label, submenuItems] = item
-        MenuItemView
-          label: label
-          items: submenuItems
-          MenuView: MenuView
-          contextRoot: contextRoot
-          parent: self
-      else
-        MenuItemView
-          label: item
-          contextRoot: contextRoot
-          parent: self
+  # Converts items from the data to the element jazz
+  getItems = Observable ->
+    items.map (item) ->
+      switch
+        when typeof item is "string" and item.match(/^[=-]+$/)
+          SeparatorView()
+        when Array.isArray(item)
+          assert item.length is 2
+          [label, submenuItems] = item
+          MenuItemView
+            label: label
+            items: submenuItems
+            MenuView: MenuView
+            contextRoot: contextRoot
+            parent: self
+        else
+          MenuItemView
+            label: item
+            contextRoot: contextRoot
+            parent: self
 
-  navigableItems = items.filter (item) ->
-    !item.separator
+  navigableItems = Observable ->
+    getItems().filter (item) ->
+      !item.separator
 
   # TODO: This gets called per menu item when the state changes
   # Could we shift it a little to only be called for the relevant subtree?
@@ -63,7 +65,7 @@ module.exports = MenuView = ({items, classes, style, contextRoot, parent}) ->
 
   Object.assign self,
     accelerate: (key) ->
-      accelerateItem(items, key)
+      accelerateItem(getItems(), key)
     cursor: (direction) ->
       switch direction
         when "Up"
@@ -73,9 +75,9 @@ module.exports = MenuView = ({items, classes, style, contextRoot, parent}) ->
         else
           parent.parent?.cursor(direction)
     parent: parent
-    items: items
+    items: getItems
     advance: (n) ->
-      activeItem advance(navigableItems, n)
+      activeItem advance(navigableItems(), n)
     navigableItems: navigableItems
     element: MenuTemplate
       style: style
@@ -85,6 +87,7 @@ module.exports = MenuView = ({items, classes, style, contextRoot, parent}) ->
         ].concat classes()
       click: handle (e) ->
         activeItem self
-      items: items.map asElement
+      items: ->
+        getItems().map asElement
 
   return self
