@@ -6,6 +6,12 @@ A = (attr) ->
 F = (methodName) ->
   (x) -> x[methodName]()
 
+get = (x, context) ->
+  if typeof x is 'function'
+    x.call(context)
+  else
+    x
+
 # Observable attribute helper
 o = (object, name) ->
   attribute = Observable(object[name])
@@ -105,6 +111,7 @@ module.exports =
   elementView: elementView
   empty: empty
   formDataToObject: formDataToObject
+  get: get
   handle: handle
   isDescendant: isDescendant
 
