@@ -40,8 +40,6 @@ module.exports = ({label, MenuView, items, contextRoot, parent}) ->
       activeItem submenu
       return
 
-    console.log "Handling", actionName
-
     action?.call?(handlers)
 
     # TODO: More cleanup than just clearing the active item, like also we
