@@ -36,14 +36,12 @@ document.addEventListener "mousemove", (e) ->
   if activeDrag
     {clientX:prevX, clientY:prevY} = dragStart
     {clientX:x, clientY:y} = e
+    dragStart = e
 
     if activeDrag.maximized()
-      maximizedX = activeDrag.x()
-      maximizedY = activeDrag.y()
-
       activeDrag.restore()
       activeDrag.x x - activeDrag.width() / 2
-      activeDrag.y maximizedY
+      activeDrag.y y - 30
 
     dx = x - prevX
     dy = y - prevY
@@ -51,7 +49,40 @@ document.addEventListener "mousemove", (e) ->
     activeDrag.x activeDrag.x() + dx
     activeDrag.y activeDrag.y() + dy
 
-    dragStart = e
+    # Hot Edges / Corners
+    leftEdge = x <= 10
+    rightEdge = x >= document.body.getBoundingClientRect().width - 10
+    hotX = leftEdge or rightEdge
+
+    topEdge = y <= 10
+    bottomEdge = y >= document.body.getBoundingClientRect().height - 10
+    hotY = topEdge or bottomEdge
+
+    if hotX or hotY
+      xPos = "0%"
+      yPos = "0%"
+      hotWidth = "50%"
+      hotHeight = "50%"
+
+      if !hotX
+        hotWidth = "100%"
+
+      if !hotY
+        hotHeight = "100%"
+
+      if bottomEdge
+        yPos = "50%"
+
+      if rightEdge
+        xPos = "50%"
+
+      activeDrag.saveSize()
+      activeDrag.maximized(true)
+      activeDrag.x(xPos)
+      activeDrag.y(yPos)
+      activeDrag.width(hotWidth)
+      activeDrag.height(hotHeight)
+
 
 # Resize Handling
 activeResize = null
@@ -102,10 +133,10 @@ document.addEventListener "mousemove", (e) ->
 
     view = elementView activeResize
     if activeResize.classList.contains("n")
-      view.y resizeInitial.y- actualDeltaY
+      view.y resizeInitial.y - actualDeltaY
 
     if activeResize.classList.contains("w")
-      view.x resizeInitial.x- actualDeltaX
+      view.x resizeInitial.x - actualDeltaX
 
     view.width width
     view.height height
@@ -207,15 +238,20 @@ module.exports = (params) ->
       # Maybe we count on people to override this method if they want
       element.remove()
 
+    saveSize: ->
+      prevWidth width()
+      prevHeight height()
+      if typeof x() is 'number'
+        prevX x()
+      if typeof y() is 'number'
+        prevY y()
+
     maximized: maximized
     maximize: ->
       maximized.toggle()
 
       if maximized()
-        prevWidth width()
-        prevHeight height()
-        prevX x()
-        prevY y()
+        self.saveSize()
 
         width null
         height null
@@ -256,7 +292,9 @@ module.exports = (params) ->
 styleBind = (observable, element, attr, suffix="") ->
   update = (newValue) ->
 
-    if newValue? and (newValue = parseInt newValue)?
+    if typeof newValue is "string"
+      element.style[attr] = newValue
+    else if newValue? and (newValue = parseInt newValue)?
       element.style[attr] = "#{newValue}#{suffix}"
     else
       element.style[attr] = null
