@@ -5,3 +5,6 @@ remoteDependencies: [
 dependencies:
   observable: "distri/observable:master"
   bindable: "distri/bindable:master"
+publish:
+  s3:
+    basePath: "public/danielx.net"
